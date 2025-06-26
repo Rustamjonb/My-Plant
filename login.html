@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Buyurtmani Tasdiqlash</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fdfbfb, #ebedee);
+      padding: 30px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #444;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 10px;
+    }
+
+    form input, form textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    .index {
+      width: 50 %;
+      padding: 14px;
+      background: linear-gradient(45deg, #FFD700, #FFA500);
+      color: #333;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: 0.3s ease;
+    }
+
+    form button {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(45deg, #FFD700, #FFA500);
+      color: #333;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: 0.3s ease;
+    }
+
+    form button:hover {
+      background: linear-gradient(45deg, #FFC107, #FF9800);
+    }
+
+    .note {
+      background: #f9f9f9;
+      border-left: 4px solid #FFD700;
+      padding: 10px 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Buyurtma Ma'lumotlari</h1>
+    <p>Iltimos, quyidagi ma'lumotlarni to'ldiring va biz tez orada siz bilan rasmiy <strong>visitandijan@gmail.com</strong> orqali bog'lanamiz.</p>
+
+    <div class="note">
+      3 kunlik tur ma'lumotlaringiz avtomatik yuklanadi. Faqat ismingiz va aloqani kiriting.
+    </div>
+
+    <form action="https://formspree.io/f/xvgrvlrd" method="POST">
+      <!-- User Contact Info -->
+      <label for="name">Ism-Sharifingiz</label>
+      <input type="text" name="name" id="name" required>
+
+      <label for="email">Email manzilingiz:</label>
+      <input type="email" name="email" id="email" required>
+
+      <label for="phone">Telefon raqamingiz:</label>
+      <input type="tel" name="phone" id="phone" required>
+
+      <!-- Hidden Fields for Tour Plan -->
+      <input type="hidden" name="tourists" id="tourists">
+      <input type="hidden" name="budget" id="budget">
+      <input type="hidden" name="date" id="date">
+      <input type="hidden" name="interests" id="interests">
+      <input type="hidden" name="hotel" id="hotel">
+      <input type="hidden" name="hotelDesc" id="hotelDesc">
+      <input type="hidden" name="totalCost" id="totalCost">
+      <input type="hidden" name="plan" id="plan">
+
+      <button type="submit">Buyurtmani Yuborish</button>
+      
+    </form>
+  </div><div> <a href="index.html"><button class="index">Bosh sahifaga qaytish</button></a></div>
+
+  <script>
+    const tourData = JSON.parse(localStorage.getItem("tourData") || "{}");
+
+    document.getElementById("tourists").value = tourData.tourists || "";
+    document.getElementById("budget").value = tourData.budget || "";
+    document.getElementById("date").value = tourData.date || "";
+    document.getElementById("interests").value = tourData.interests || "";
+    document.getElementById("hotel").value = tourData.hotel || "";
+    document.getElementById("hotelDesc").value = tourData.hotelDesc || "";
+    document.getElementById("totalCost").value = tourData.totalCost || "";
+
+    const planText = (tourData.plan || []).map(day =>
+      `${day.title}\n` + day.activities.map(a => `- [${a.type}] ${a.name}: ${a.desc}`).join('\n')
+    ).join('\n\n');
+
+    document.getElementById("plan").value = planText;
+  </script>
+
+</body>
+</html>

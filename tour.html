@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andijan 3 Kunlik Tur Generatori</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), 
+                        url('img/bg.jpg') center/cover no-repeat fixed;
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .navbar {
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #FFD700;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #FFD700;
+        }
+        
+        .main-content {
+            margin-top: 80px;
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .title h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .title p {
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+        
+        .form-container {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(255,215,0,0.5);
+        }
+        
+        .generate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,215,0,0.4);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: #333;
+        }
+        
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #FFD700;
+        }
+        
+        .modal-header h2 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .day-plan {
+            margin-bottom: 2rem;
+            background: rgba(255,215,0,0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border-left: 5px solid #FFD700;
+        }
+        
+        .day-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #FFA500;
+            margin-bottom: 1rem;
+        }
+        
+        .activity {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .activity-type {
+            font-weight: bold;
+            color: #FFD700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        
+        .activity-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .activity-description {
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
+        }
+        
+        .btn-secondary {
+            background: #666;
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        .hotel-info {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .hotel-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .budget-info {
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .title h1 {
+                font-size: 2.5rem;
+            }
+            
+            .form-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">VisitAndijan.com</div>
+            <div class="nav-links">
+                <a href="#home">Bosh sahifa</a>
+                <a href="#tours">Turlar</a>
+                <a href="#about">Biz haqimizda</a>
+                <a href="#contact">Aloqa</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="title">
+            
+            <p>Sayohat rejangizni yarating</p>
+        </div>
+
+        <div class="form-container">
+            <form id="tourForm">
+                <div class="form-group">
+                    <label for="tourists">Sayyohlar soni:</label>
+                    <select id="tourists" required>
+                        <option value="">Tanlang</option>
+                        <option value="1">1 kishi</option>
+                        <option value="2">2 kishi</option>
+                        <option value="3-4">3-4 kishi</option>
+                        <option value="5-6">5-6 kishi</option>
+                        <option value="7+">7+ kishi</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="budget">Byudjet kategoriyasi:</label>
+                    <select id="budget" required>
+                        <option value="">Tanlang</option>
+                        <option value="ekonom">Ekonom (50-100$ kuniga)</option>
+                        <option value="standart">Standart (100-150$ kuniga)</option>
+                        <option value="premium">Premium (200$ kuniga)</option>
+                        <option value="lux">Lux (300$+ kuniga)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Sayohat sanasi:</label>
+                    <input type="date" id="date" required min="2025-05-30">
+                </div>
+
+                <div class="form-group">
+                    <label for="interests">Qiziqishlar:</label>
+                    <select id="interests" required>
+                        <option value="">Tanlang</option>
+                        <option value="tarix">Tarixiy joylar</option>
+                        <option value="madaniyat">Madaniyat va san'at</option>
+                        <option value="tabiat">Tabiat va landshaft</option>
+                        <option value="gastro">Gastronomiya</option>
+                        <option value="aralash">Aralash tur</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="generate-btn">Tur rejasini yaratish</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="tourModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Sizning 3 kunlik Andijan turingiz</h2>
+                <div id="tourDates"></div>
+            </div>
+            
+            <div class="budget-info">
+                <strong>Umumiy narx: <span id="totalCost"></span></strong>
+            </div>
+            
+            <div class="hotel-info">
+                <div class="hotel-name" id="hotelName"></div>
+                <div id="hotelDescription"></div>
+            </div>
+            
+            <div id="tourPlan"></div>
+            
+            <div class="modal-buttons">
+             <button class="btn btn-primary" onclick="window.location.href='login.html'">Buyurtma berish</button>
+
+                <button class="btn btn-secondary" onclick="closeModal()">Yopish</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tourData = {
+            hotels: {
+                ekonom: { name: "Andijan Plaza Hotel", desc: "Qulay va toza, markazda joylashgan" },
+                standart: { name: "Andijan International", desc: "Zamonaviy qulayliklar bilan to'liq jihozlangan" },
+                premium: { name: "Villa Elegant", desc: "Lux xizmat va ajoyib manzara" },
+                lux: { name: "Chinor", desc: "Eng yuqori darajadagi xizmat va hashamatli qulayliklar" }
+            },
+            
+            attractions: {
+                tarix: [
+                    { name: "Bobur bog'i", desc: "Buyuk shoiru shoir Bobur xotirasiga bag'ishlangan tarixiy bog'", type: "tarixiy" },
+                    { name: "Jome masjidi", desc: "XIX asrda qurilgan ajoyib arxitektura namunasi", type: "tarixiy" },
+                    { name: "Qal'a yodgorligi", desc: "Qadimgi shahar qal'asi", type: "tarixiy" }
+                ],
+                madaniyat: [
+                    { name: "Andijon viloyat muzeyi", desc: "Mahalliy tarix va madaniyat eksponatlari", type: "muzey" },
+                    { name: "Hunarmandchilik markazi", desc: "An'anaviy o'zbek hunarmandchiligi namoyishi", type: "madaniy" },
+                    { name: "Viloyat musiqa va raqs teatri", desc: "Mahalliy san'at va spektakllar", type: "teatr" }
+                ],
+                tabiat: [
+                    { name: "Imom Ota", desc: "Go'zal tabiat manzarasi va dam olish joyi", type: "tabiat" },
+                    { name: "Xonobot", desc: "Tog'li hudud va noyob tabiat", type: "tabiat" },
+                    { name: "Minghtepa", desc: "Tarixiy shaxar", type: "park" }
+                ]
+            },
+            
+            restaurants: {
+                ekonom: [
+                    { name: "Oazis", desc: "Kafe" },
+                    { name: "Xakan somsa", desc: "Yangi pishirilgan samsa va non" }
+                ],
+                standart: [
+                    { name: "Basaking", desc: "O'rta Osiyo va jahon oshxonasi" },
+                    { name: "Gumbaz", desc: "Zamonaviy muhit va mazali taomlar" }
+                ],
+                premium: [
+                    { name: "Sultan Axmet", desc: "Lux muhit va ajoyib xizmat" },
+                    { name: "Ali-Baba", desc: "VIP xizmat va eksklyuziv menyular" }
+                ]
+            }
+        };
+
+        document.getElementById('tourForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            generateTour();
+        });
+
+        function generateTour() {
+            const tourists = document.getElementById('tourists').value;
+            const budget = document.getElementById('budget').value;
+            const date = document.getElementById('date').value;
+            const interests = document.getElementById('interests').value;
+
+            if (!tourists || !budget || !date || !interests) {
+                alert('Iltimos, barcha maydonlarni to\'ldiring!');
+                return;
+            }
+
+            const startDate = new Date(date);
+            const endDate = new Date(startDate);
+            endDate.setDate(startDate.getDate() + 2);
+
+            const plan = createTourPlan(budget, interests);
+            displayTourPlan(plan, budget, startDate, endDate, tourists);
+        }
+
+        function createTourPlan(budget, interests) {
+            const plan = [];
+            let attractions = [];
+            
+            if (interests === 'aralash') {
+                attractions = [...tourData.attractions.tarix, ...tourData.attractions.madaniyat, ...tourData.attractions.tabiat];
+            } else {
+                attractions = tourData.attractions[interests] || tourData.attractions.tarix;
+            }
+
+            const restaurants = tourData.restaurants[budget === 'lux' ? 'premium' : budget] || tourData.restaurants.ekonom;
+
+            // 1-kun
+            plan.push({
+                day: 1,
+                title: "1-kun: Kelish va shaharni o'rganish",
+                activities: [
+                    { type: "Kelish", name: "Mehmonxonaga joylashish", desc: "Kelish va xonaga joylashish" },
+                    { type: "Diqqatga sazovor joy", ...attractions[0] },
+                    { type: "Tushlik", ...restaurants[0] },
+                    { type: "Diqqatga sazovor joy", ...attractions[1] },
+                    { type: "Kechki ovqat", ...restaurants[1] }
+                ]
+            });
+
+            // 2-kun
+            plan.push({
+                day: 2,
+                title: "2-kun: Asosiy diqqatga sazovor joylar",
+                activities: [
+                    { type: "Nonushta", name: "Mehmonxonada nonushta", desc: "To'yib nonushta qiling" },
+                    { type: "Diqqatga sazovor joy", ...attractions[2] },
+                    { type: "Tushlik", ...restaurants[0] },
+                    { type: "Diqqatga sazovor joy", name: "Mahalliy bozor", desc: "An'anaviy bozorni ko'rib chiqing va suvg'otlar sotib oling" },
+                    { type: "Kechki ovqat", ...restaurants[1] }
+                ]
+            });
+
+            // 3-kun
+            plan.push({
+                day: 3,
+                title: "3-kun: Yakuniy kun va jo'nash",
+                activities: [
+                    { type: "Nonushta", name: "Mehmonxonada nonushta", desc: "Oxirgi nonushta" },
+                    { type: "Diqqatga sazovor joy", name: "Andijan hunarmandchilik markazi", desc: "Mahalliy hunarmandchilik va suvg'otlar" },
+                    { type: "Tushlik", ...restaurants[0] },
+                    { type: "Jo'nash", name: "Mehmonxonadan chiqish", desc: "Xayrlashish va jo'nash" }
+                ]
+            });
+
+            return plan;
+        }
+
+        function displayTourPlan(plan, budget, startDate, endDate, tourists) {
+            const hotel = tourData.hotels[budget];
+            const costs = {
+                ekonom: 100,
+                standart: 200,
+                premium: 320,
+                lux: 500
+            };
+
+            const touristMultiplier = getTouristMultiplier(tourists);
+            const totalCost = costs[budget] * 3 * touristMultiplier;
+
+            document.getElementById('tourDates').innerHTML = 
+                `${formatDate(startDate)} - ${formatDate(endDate)}`;
+            
+            document.getElementById('totalCost').innerHTML = 
+                `$${totalCost} (${tourists} uchun)`;
+            
+            document.getElementById('hotelName').innerHTML = hotel.name;
+            document.getElementById('hotelDescription').innerHTML = hotel.desc;
+
+            let planHTML = '';
+            plan.forEach(day => {
+                planHTML += `
+                    <div class="day-plan">
+                        <div class="day-title">${day.title}</div>
+                `;
+                
+                day.activities.forEach(activity => {
+                    planHTML += `
+                        <div class="activity">
+                            <div class="activity-type">${activity.type}</div>
+                            <div class="activity-name">${activity.name}</div>
+                            <div class="activity-description">${activity.desc}</div>
+                        </div>
+                    `;
+                });
+                
+                planHTML += '</div>';
+            });
+
+            document.getElementById('tourPlan').innerHTML = planHTML;
+            document.getElementById('tourModal').style.display = 'block';
+            // Save full tour plan to localStorage
+const fullPlan = {
+    tourists,
+    budget,
+    date: startDate.toISOString().split('T')[0],
+    interests,
+    hotel: hotel.name,
+    hotelDesc: hotel.desc,
+    totalCost: `$${totalCost} (${tourists} uchun)`,
+    plan
+  };
+  
+  localStorage.setItem("tourData", JSON.stringify(fullPlan));
+  
+        }
+
+        function getTouristMultiplier(tourists) {
+            switch(tourists) {
+                case '1': return 1;
+                case '2': return 1.8;
+                case '3-4': return 3.2;
+                case '5-6': return 4.8;
+                case '7+': return 6.5;
+                default: return 1;
+            }
+        }
+
+        function formatDate(date) {
+            return date.toLocaleDateString('uz-UZ', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('tourModal').style.display = 'none';
+        }
+
+        function bookTour() {
+            alert('Rahmat! Sizning buyurtmangiz qabul qilindi. Tez orada siz bilan bog\'lanamiz.');
+            closeModal();
+        }
+
+        // Modal tashqarisiga bosganda yopish
+        window.onclick = function(event) {
+            const modal = document.getElementById('tourModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>

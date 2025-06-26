@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Tour Package</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 30px;
+      color: #333;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    /* Blurred background */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('img/bagg.jpg') no-repeat center center / cover;
+      filter: blur(12px);
+      z-index: -1;
+      opacity: 0.8;
+    }
+    
+    /* Optional frosted-glass container if needed */
+    .container {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+    
+    
+    h2 {
+      color: #00796b;
+      font-size: 28px;
+      margin-bottom: 15px;
+      border-left: 5px solid #00796b;
+      padding-left: 10px;
+    }
+    
+    ul {
+      padding-left: 25px;
+      list-style-type: square;
+    }
+    
+    li {
+      margin-bottom: 12px;
+      transition: color 0.3s ease;
+    }
+    
+    li:hover {
+      color: #004d40;
+    }
+    
+    .section {
+      margin-bottom: 40px;
+      padding: 20px;
+      background-color: #ffffffcc;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 96, 96, 0.1);
+    }
+    
+    button {
+      margin-left: 10px;
+      padding: 8px 16px;
+      background-color: #009688;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    
+    button:hover {
+      background-color: #00796b;
+      transform: scale(1.05);
+    }
+    
+  </style>
+</head>
+<body>
+
+<h1>Ozingiz yasagan tur rejangiz:</h1>
+<div id="packageContainer"></div>
+
+<script>
+const sampleData = {
+  places: {
+    mingtepa: { name: "Mingtepa", desc: "Qadimiy shaxar", price: 5 },
+    qala: { name: "Qala", desc: "Memoriy yodgorlik", price: 7 },
+    ark: { name: "Ark", desc: "Memoriy yodgorlik", price: 3 },
+    bbr: { name: "Bog'i-Bobur", desc: "Ramziy bog'", price: 4 },
+    axmadbek: { name: "Axmadbek Xoji", desc: "Mexmonxonasi", price: 2 },
+    xz: { name: "Hunarmandchilik zonasi", desc: "", price: 0 },
+    jome: { name: "Jome yodgorligi", desc: "", price: 2 },
+    qosh: { name: "Qo'shtepa", desc: "Qadimiy shaxar", price: 3 },
+    Xonobot: { name: "Xonobod ", desc: "sihatgoh", price: 4 },
+    orda: { name: "Oltin orda", desc: "", price: 5 },
+    yu: { name: "Yunusali Gʻoziev xonadoni", desc: "turistik uy", price: 1 },
+    imom: { name: "Imom Ota", desc: "ziyoratgoh", price: 1 },
+    shoxsupa: { name: "Shoxsupa", desc: "", price: 5 },
+    shirmonbuloq: { name: "Shirmonbuloq", desc: "Dam olish maskani", price: 4 },
+    bibi: { name: "Bibi Seshanba ", desc: "ziyoratgoh", price: 2 },
+    xontog: { name: "Xontog'", desc: "Dam olish maskani", price: 5 },
+  },
+  restaurants: {
+    uzbeg: { name: "O'zbegim", desc: "Restaurant", price: 20 },
+    shukrona: { name: "La Veranda", desc: "Restaurant", price: 0 },
+    hilol: { name: " La Veranda", desc: "Restaurant", price: 0 },
+    kebab: { name: "Istambul kebab", desc: "Restaurant", price: 0 },
+    ahmed: { name: " Sultan ahmed", desc: "Restaurant", price: 0 },
+    belissimo: { name: "Belissimo", desc: "Pizza", price: 0 },
+    
+  },
+  events: {
+    miran: { name: "Miran Hostel", desc: "Hostel", price: 19 },
+    inter: { name: "Andijan International", desc: "Hotel", price: 40 },
+    vella: { name: "Vella Elegant", desc: "Hotel", price: 33 },
+    sultan: { name: "Sultan Botique", desc: "Hotel", price: 40 },
+    plaza: { name: "Plaza", desc: "Hotel", price: 50 },
+    oazis: { name: "Oazis Hotel", desc: "Hotel", price: 25 },
+    bshamol: { name: "Hotel Bog'ishamol", desc: "Hotel", price: 90 },
+    handijon: { name: "Hotel Andijan ", desc: "Hotel", price: 50 },
+    premier: { name: "Premier", desc: "Hotel", price: 85 },
+    chinor: { name: "Chinor", desc: "Hotel", price: 85 },
+    elita: { name: "Elita Hotel", desc: "Hotel", price: 50 },
+    hostel: { name: "Hostel Eski Shahar", desc: "Hostel", price: 20 },
+  }
+};
+
+// Load cart from localStorage
+const cart = JSON.parse(localStorage.getItem("tourCart")) || {
+  places: [],
+  restaurants: [],
+  events: []
+};
+
+let total = 0;
+let output = "";
+
+// Loop through each category
+for (const [category, items] of Object.entries(cart)) {
+  if (items.length > 0) {
+    output += `<div class="section"><h2>${category.toUpperCase()}</h2><ul>`;
+    items.forEach(id => {
+      const item = sampleData[category][id];
+      if (item) {
+        total += item.price;
+        output += `<li><strong>${item.name}</strong>: ${item.desc} – $${item.price}
+          <button onclick="removeItem('${category}', '${id}')">❌ Remove</button>
+        </li>`;
+      }
+    });
+    output += "</ul></div>";
+  }
+}
+
+output += `<h2>Total: $${total}</h2>`;
+output += `<button onclick="finalizeBooking()">✅ Confirm Booking</button>`;
+
+document.getElementById("packageContainer").innerHTML = output;
+
+// Remove item from cart
+function removeItem(category, id) {
+  cart[category] = cart[category].filter(item => item !== id);
+  localStorage.setItem("tourCart", JSON.stringify(cart));
+  location.reload();
+}
+
+function finalizeBooking() {
+  const bookingSummary = document.getElementById("packageContainer").innerHTML;
+  localStorage.setItem("bookingSummary", bookingSummary); // Store summary
+  location.href = "login.html"; // Redirect
+}
+
+
+</script>
+
+</body>
+</html>

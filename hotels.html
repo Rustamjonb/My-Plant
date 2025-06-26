@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Andijon Sayohat Maskanlari</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: url('img/bshamol.jpg') center/cover no-repeat fixed;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      min-height: 100vh;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      color: #f9f9f9;
+      text-shadow: 0 0 10px #000;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 1300px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #ffde59;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-slogan {
+      font-size: 0.95rem;
+      color: #e0e0e0;
+    }
+    .btn {
+      background: #ffde59;
+      color: #000;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s ease;
+      display: inline-block;
+    }
+
+    /* Modal styles */
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .modal.active {
+      display: flex;
+      overflow: auto;
+    }
+
+    .modal-content {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      max-width: 600px;
+      width: 90%;
+      padding: 1.5rem;
+      color: #fff;
+      text-align: center;
+      position: relative;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .modal-content img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+
+    .modal-content p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal-content .btn {
+      background: #ffde59;
+      color: #000;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s ease;
+      display: inline-block;
+    }
+
+    .modal-content .btn:hover {
+      background: #f4c400;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px; right: 15px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #ccc;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <h1>Mehmonxonalar</h1>
+ 
+  <a href="booking.html"><button  class="btn">Saqlanganlar</button></a>
+  <div class="grid">
+    <!-- 21 cards -->
+  
+      <div class="card" onclick="openModal(1)">
+        <img src="img/miran.jpg" alt="Joy 1">
+        <div class="card-content">
+          <div class="card-title">Miran</div>
+          <div class="card-slogan">Hostel</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(2)">
+        <img src="img/inter.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Andijan International Hotel</div>
+          <div class="card-slogan">Hotel 3⭐</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(3)">
+        <img src="img/vella.jpg" alt="Joy 1">
+        <div class="card-content">
+          <div class="card-title">Vella Elegant</div>
+          <div class="card-slogan">Hotel 3⭐</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(4)">
+        <img src="img/sultan.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Sulatan botique hotel
+            </div>
+          <div class="card-slogan">Hotel</div>
+        </div>
+      </div>      
+      <div class="card" onclick="openModal(5)">
+        <img src="img/plaza.jpg" alt="Joy 1">
+        <div class="card-content">
+          <div class="card-title">Hotel Plaza</div>
+          <div class="card-slogan">Hotel</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(6)">
+        <img src="img/oazis.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Oazis</div>
+          <div class="card-slogan">Hotel</div>
+        </div>
+      </div>      
+      <div class="card" onclick="openModal(7)">
+        <img src="img/bshamol.jpg" alt="Joy 1">
+        <div class="card-content">
+          <div class="card-title">Bog'ishamol Hotel</div>
+          <div class="card-slogan">Hotel </div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(8)">
+        <img src="img/handijon.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Hotel Andijan</div>
+          <div class="card-slogan">Hotel</div>
+        </div>
+      </div>     
+       <div class="card" onclick="openModal(9)">
+        <img src="img/premier.jpg" alt="Joy 1">
+        <div class="card-content">
+          <div class="card-title">Premier Hotel 3⭐</div>
+          <div class="card-slogan">Hotel</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(10)">
+        <img src="img/chinor.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Chinor </div>
+          <div class="card-slogan">Hotel 3⭐</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(11)">
+        <img src="img/elita.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Elita Hotel</div>
+          <div class="card-slogan">Hotel</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(12)">
+        <img src="img/hostel.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Eski Shahar </div>
+          <div class="card-slogan">Hostel</div>
+        </div>
+      </div>
+      
+  
+
+  <!-- 21 modals -->
+ 
+    <div class="modal" id="modal-1">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal(1)">&times;</span>
+        <img src="img/miran.jpg" alt="Joy 1}">
+        <p><strong>Miran Hostel- </strong> Reyting - 4.8
+          </p>
+          <p>Bir kishi uchun - 207,000 UZS</p>Ish vaqti - Har kuni</p> <p>24 soat</p>
+        
+        <button onclick="addToCart('events', 'miran')" class="btn">Saqlash</button>
+      </div>
+    </div>
+    <div class="modal" id="modal-2">
+        <div class="modal-content">
+          <span class="close-btn" onclick="closeModal(2)">&times;</span>
+          <img src="img/inter.jpg" alt="Joy 2}">
+          <p><strong>Andijan International- </strong> Reyting - 4.7
+          </p>
+          <p>Bir kishi uchun - 462,000 UZS</p>Ish vaqti - Har kuni</p> <p>24 soat</p>
+        
+          <button onclick="addToCart('events', 'inter')" class="btn">Saqlash</button>
+        </div>
+      </div>
+      <div class="modal" id="modal-3">
+        <div class="modal-content">
+          <span class="close-btn" onclick="closeModal(3)">&times;</span>
+          <img src="img/vella.jpg" alt="Joy 1}">
+          <p><strong>Vella Elegant- </strong> Reyting - 4.0
+          </p>
+          <p>Bir kishi uchun - 358,000 UZS</p>Ish vaqti - Har kuni</p> <p>24 soat</p>        
+          <button onclick="addToCart('events', 'vella')" class="btn">Saqlash</button>
+        </div>
+      </div>
+      <div class="modal" id="modal-4">
+          <div class="modal-content">
+            <span class="close-btn" onclick="closeModal(4)">&times;</span>
+            <img src="img/sultan.jpg" alt="Joy 2}">
+            <p><strong>Sultan Botique Hotel- </strong> Reyting - 4.6
+            </p>
+            <p>Bir kishi uchun - 405,000 UZS</p>Ish vaqti - Har kuni</p> <p>24 soat</p>          
+            <button onclick="addToCart('events', 'sultan')" class="btn">Saqlash</button>
+          </div>
+        </div> <div class="modal" id="modal-5">
+          <div class="modal-content">
+            <span class="close-btn" onclick="closeModal(5)">&times;</span>
+            <img src="img/plaza.jpg" alt="Joy 1}">
+            <p><strong>Hotel Plaza- </strong> Reyting - 4.6
+            </p>
+            <p>Bir kishi uchun - 540,000 UZS</p>Ish vaqti - Har kuni</p> <p>24 soat</p>
+            
+            <button onclick="addToCart('events', 'plaza')" class="btn">Add Mingtepa</button>
+          </div>
+        </div>
+        <div class="modal" id="modal-6">
+            <div class="modal-content">
+              <span class="close-btn" onclick="closeModal(6)">&times;</span>
+              <img src="img/Oazis.jpg" alt="Joy 2}">
+              <p><strong>Oazais Hotel </strong> Reyting - 4.2
+              </p>
+              <p>Bir kishi uchun - 285,000 UZS</p>Ish vaqti - Har kuni</p> <p>24 soat</p>
+              <button onclick="addToCart('events', 'shirmonbuloq')" class="btn">Saqlash</button>
+            </div>
+          </div> <div class="modal" id="modal-7">
+            <div class="modal-content">
+              <span class="close-btn" onclick="closeModal(7)">&times;</span>
+              <img src="img/bshamol.jpg" alt="Joy 1}">
+              <p><strong>Hotel Bog'ishamol- </strong> Reyting - 4.4
+              </p>
+              <p>Bir kishi uchun - 1,070,000 UZS</p>Ish vaqti - Har kuni</p> <p>24 soat</p>            
+              <button onclick="addToCart('events', 'bshamol')" class="btn">Saqlash</button>
+            </div>
+          </div>
+          <div class="modal" id="modal-8">
+              <div class="modal-content">
+                <span class="close-btn" onclick="closeModal(8)">&times;</span>
+                <img src="img/handijon.jpg" alt="Joy 2}">
+                <p><strong>Hotel Andijan- </strong> Reyting - 4.0
+                </p>
+                <p>Bir kishi uchun - 549,000 UZS</p>Ish vaqti - Har kuni</p> <p>24 soat</p>
+              
+                <button onclick="addToCart('events', 'handijon')" class="btn">Saqlash</button>
+              </div>
+            </div> <div class="modal" id="modal-9">
+              <div class="modal-content">
+                <span class="close-btn" onclick="closeModal(9)">&times;</span>
+                <img src="img/premier.jpg" alt="Joy 1}">
+                <p><strong>Premier Hotel- </strong> Reyting - 4.5
+                </p>
+                <p>Bir kishi uchun - 1,014,000 UZS</p>Ish vaqti - Har kuni</p> <p>24 soat</p>              
+                <button onclick="addToCart('events', 'premier')" class="btn">Saqlash</button>
+              </div>
+            </div>
+            <div class="modal" id="modal-10">
+                <div class="modal-content">
+                  <span class="close-btn" onclick="closeModal(10)">&times;</span>
+                  <img src="img/Chinor.jpg" alt="Joy 2}">
+                  <p><strong>Chinor Hotel- </strong> Reyting - 4.7
+                  </p>
+                  <p>Bir kishi uchun - 1,002,000 UZS</p>Ish vaqti - Har kuni</p> <p>24 soat</p>
+                
+                  <button onclick="addToCart('events', 'chinor')" class="btn">Saqlash</button>
+                </div>
+              </div>
+              <div class="modal" id="modal-11">
+                <div class="modal-content">
+                  <span class="close-btn" onclick="closeModal(11)">&times;</span>
+                  <img src="img/elita.jpg" alt="Joy 2}">
+                  <p><strong>Elita Hotel-</strong> Reyting - 4.3
+                  </p>
+                  <p>Bir kishi uchun - 450,000 UZS</p>Ish vaqti - Har kuni</p> <p>24 soat</p>
+                
+                  <button onclick="addToCart('events', 'elita')" class="btn">Saqlash</button>
+                </div>
+              </div>
+              <div class="modal" id="modal-12">
+                <div class="modal-content">
+                  <span class="close-btn" onclick="closeModal(12)">&times;</span>
+                  <img src="img/hostel.jpg" alt="Joy 2}">
+                  <p><strong>Eski Shahar Hostel- </strong> Reyting - 4.2
+                  </p>
+                  <p>Bir kishi uchun - 210,000 UZS</p>Ish vaqti - Har kuni</p> <p>24 soat</p>                
+                  <button onclick="addToCart('events', 'hostel')" class="btn">Saqlash</button>
+                </div>
+              </div>
+              
+  
+
+  <script>
+    function openModal(id) {
+      document.getElementById('modal-' + id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById('modal-' + id).classList.remove('active');
+    }
+
+    // Close modals when clicking outside
+    window.addEventListener('click', function(e) {
+      document.querySelectorAll('.modal').forEach(modal => {
+        if (e.target === modal) modal.classList.remove('active');
+      });
+    });
+    function addToCart(category, id) {
+      let cart = JSON.parse(localStorage.getItem("tourCart")) || {
+        places: [],
+        restaurants: [],
+        events: []
+      };
+    
+      if (!cart[category].includes(id)) {
+        cart[category].push(id);
+        localStorage.setItem("tourCart", JSON.stringify(cart));
+        alert(`${id.toUpperCase()} added to your tour package.`);
+      } else {
+        alert(`${id.toUpperCase()} already in your tour package.`);
+      }
+    }
+  </script>
+</body>
+</html>

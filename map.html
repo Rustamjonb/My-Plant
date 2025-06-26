@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andijon Turizm Xaritasi</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .controls {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .controls h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            text-align: center;
+        }
+
+        .category-filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .category-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .category-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .category-btn.active {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            transform: scale(1.05);
+        }
+
+        .map-container {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        #map {
+            height: 600px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .popup-content {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .popup-content h4 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .popup-content p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .popup-content .category-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .legend {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .legend h4 {
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .legend-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .legend-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .category-filters {
+                grid-template-columns: 1fr;
+            }
+            
+            #map {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🗺️ Andijon Turizm Xaritasi</h1>
+        <p>Andijon viloyatining eng go'zal joylari</p>
+    </div>
+
+    <div class="container">
+        <div class="controls">
+            <h3>🏛️ Kategoriyalarni tanlang</h3>
+            <div class="category-filters">
+                <button class="category-btn active" data-category="all">🌟 Barchasi</button>
+                <button class="category-btn" data-category="ziyoratgoh">🕌 Ziyoratgohlar</button>
+                <button class="category-btn" data-category="memoriy">🏛️ Me'moriy majmualar</button>
+                <button class="category-btn" data-category="muzey">🏛️ Muzeylar</button>
+                <button class="category-btn" data-category="dam_olish">🏞️ Dam olish maskanları</button>
+                <button class="category-btn" data-category="fermer">🌾 Fermer xo'jaliklari</button>
+                <button class="category-btn" data-category="boshqa">🎯 Boshqa joylar</button>
+            </div>
+        </div>
+
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">46</div>
+                <div class="stat-label">Jami joylar</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">15</div>
+                <div class="stat-label">Ziyoratgohlar</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Me'moriy obyektlar</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Dam olish joylari</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize map centered on Andijan city only
+        const map = L.map('map').setView([40.99, 72.90], 9);
+
+        // Custom map tiles with satellite view
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 18,
+        }).addTo(map);
+
+        // Place data with categories and descriptions - Andijan city only
+        const places = [
+            // Ziyoratgohlar - closer to city center
+            { name: "Imom Ota", category: "ziyoratgoh", lat: 40.7821, lng: 72.3442, description: "Qadimiy ziyoratgoh", icon: "🕌" },
+            { name: "Xo'jabosmon ota", category: "ziyoratgoh", lat: 40.5239, lng: 72.3074, description: "Mashhur ziyoratgoh", icon: "🕌" },
+            { name: "Bog'i-Bobur nomidagi rasmiy qabr", category: "ziyoratgoh", lat: 40.4319, lng: 72.2620, description: "Ramziy qabr", icon: "🕌" },
+            { name: "Tuzluq Momo Ziyoratgohi", category: "ziyoratgoh", lat: 40.5225, lng: 72.5311, description: "Tarixiy ziyoratgoh", icon: "🕌" },
+            { name: "Oqbzozor ota", category: "ziyoratgoh", lat: 40.7780, lng: 72.3400, description: "ziyoratgoh", icon: "🕌" },
+            { name: "Bibi Seshanba ziyoratgohi", category: "ziyoratgoh", lat: 40.7475, lng: 72.9295, description: "Ayollar uchun muqaddas joy", icon: "🕌" },
+            { name: "Mirzaqul Bo'lish madrasasi", category: "ziyoratgoh", lat: 40.4349, lng: 72.5327, description: "Eng qadimiy ziyoratgohlardan biri", icon: "🕌" },
+            { name: "Xo'ja Abdullo Tug'dor ziyoratgohi", category: "ziyoratgoh", lat: 40.6413, lng: 72.2546, description: "Madaniy meros obyekti", icon: "🕌" },
+            { name: "Oqsoqol Ota ziyoratgohi", category: "ziyoratgoh", lat: 40.6312, lng: 72.2404, description: "Ziyoratgoh", icon: "🕌" },
+            { name: "Uch Buloq Ziyoratgohi", category: "ziyoratgoh", lat: 40.8549, lng: 72.9776, description: " Ziyoratgohlardan biri", icon: "🕌" },
+            { name: "Sulton ena ziyoratgohi", category: "ziyoratgoh", lat: 40.8911, lng: 72.8891, description: "Eng qadimiy ziyoratgohlardan biri", icon: "🕌" },
+            { name: "Sufi Ota ziyoratgohi", category: "ziyoratgoh", lat: 40.8663, lng: 72.0698, description: "Ziyoratgoh", icon: "🕌" },
+            { name: "Oychuluk ziyoratgohi", category: "ziyoratgoh", lat: 40.7935, lng: 72.8985, description: "Ziyoratgohlardan biri", icon: "🕌" },
+            { name: "Yigitpirim ziyoratgohi", category: "ziyoratgoh", lat: 40.5915, lng: 72.5123, description: "Eng qadimiy ziyoratgohlardan biri", icon: "🕌" },
+            { name: "Qutayba Ibn Muslim", category: "ziyoratgoh", lat: 40.7305, lng: 72.6300, description: "Ziyoratgoh", icon: "🕌" },
+            { name: "Teshiktosh ota", category: "ziyoratgoh", lat: 40.7933, lng: 72.6726, description: "Eng qadimiy ziyoratgohlardan biri", icon: "🕌" },
+            { name: "Yakka tut azizlari", category: "ziyoratgoh", lat: 40.8993, lng: 72.3052, description: "Ziyoratgoh", icon: "🕌" },
+            { name: "Xo'jaqambar ota ziyoratgohi", category: "ziyoratgoh", lat: 40.9405, lng: 72.2168, description: "Ziyoratgoh", icon: "🕌" },
+            { name: "Chashman Muborak", category: "ziyoratgoh", lat: 40.5812, lng: 72.2878, description: "Ziyoratgoh", icon: "🕌" },
+            { name: "Xovuzkon ota", category: "ziyoratgoh", lat: 40.9947, lng: 72.3678, description: "Eng qadimiy ziyoratgohlardan biri", icon: "🕌" },
+            { name: "Xo'jataqsim ota ziyoratgohi", category: "ziyoratgoh", lat: 40.9505, lng: 72.4708, description: "Eng qadimiy ziyoratgohlardan biri", icon: "🕌" },
+            { name: "Fozilmon Ota", category: "ziyoratgoh", lat: 40.8154, lng: 72.9954, description: "Ziyoratgoh", icon: "🕌" },
+            { name: "Manak Ota ziyoratgohi", category: "ziyoratgoh", lat: 40.6064, lng: 72.6512, description: "Eng qadimiy ziyoratgohlardan biri", icon: "🕌" },
+            { name: "Qambar ota ziyoratgohi", category: "ziyoratgoh", lat: 40.6135, lng: 72.6888, description: "Eng qadimiy ziyoratgohlardan biri", icon: "🕌" },
+
+
+            // Me'moriy majmualar va muzeylar - city center locations
+            { name: "Ahmadbekxo'jш mehmonxonasi", category: "memoriy", lat: 40.4710, lng: 72.3442, description: "Tarixiy mehmonxona", icon: "🏛️" },
+            { name: "Jome memoriy majmuasi", category: "memoriy", lat: 40.4727, lng: 72.2038, description: "Qadimiy me'morchilik yodgorligi", icon: "🏛️" },
+            { name: "Qal'a me'morchilik majmuasi", category: "memoriy", lat: 40.7626, lng: 72.3680, description: "Mudofaa me'morchiligi namunasi", icon: "🏛️" },
+            { name: "Ark ichi-Xo'jar Nobiy me'morchilik yodgorligi", category: "memoriy", lat: 40.7840, lng: 72.3607, description: "Saroy me'morchiligi", icon: "🏛️" },
+            { name: "Ibrohim Xoji uyi", category: "memoriy", lat: 40.4712, lng: 72.2046, description: "Memoriy yodgorlik", icon: "🏛️" },
+            { name: "Andijon viloyat tarixi va madaniyati davlat muzeyi", category: "muzey", lat: 40.7850, lng: 72.3460, description: "Viloyat asosiy muzeyi", icon: "🏛️" },
+            { name: "Mirishkor Ota", category: "memoriy", lat: 40.3010, lng: 72.2151, description: "Arxeologik topilmalar", icon: "🏛️" },
+            { name: "Mirzagul Buvli madrassasi", category: "memoriy", lat: 40.7770, lng: 72.3390, description: "Tarixiy ta'lim maskani", icon: "🏛️" },
+            { name: "O'zbegim savdo markazi", category: "memoriy", lat: 40.7770, lng: 72.3390, description: "Trade center", icon: "🏛️" },
+            { name: "Navruz Mall - kongilochar markazi", category: "memoriy", lat: 40.7770, lng: 72.3390, description: "Kongil ochar", icon: "🏛️" },
+            { name: "ICE RINK", category: "memoriy", lat: 40.7770, lng: 72.3390, description: "Ko'ngil ochar markazi", icon: "🏛️" },
+            { name: "Mirzagul Buvli madrassasi", category: "memoriy", lat: 40.7770, lng: 72.3390, description: "Tarixiy ta'lim maskani", icon: "🏛️" },
+
+            // Dam olish maskanlari - within city limits
+            { name: "So'chi dam olish maskani", category: "dam_olish", lat: 40.4425, lng: 72.0606, description: "Tabiat qo'ynida dam olish", icon: "🏞️" },
+            { name: "Yangi Andijon", category: "dam_olish", lat: 40.7909, lng: 72.4488, description: "Oilaviy dam olish markazi", icon: "🏞️" },
+            { name: "Delfin ko'li dam olish maskani", category: "dam_olish", lat: 40.4628, lng: 72.0048, description: "Suv sport turlari", icon: "🏞️" },
+            { name: "Oltin Orda dam olish maskani", category: "dam_olish", lat: 40.4819, lng: 72.5838, description: "Hashamatli dam olish maskani", icon: "🏞️" },
+            { name: "Xonobod sihatgohi", category: "dam_olish", lat: 40.4830, lng: 72.5855, description: "Sog'lomlashtirish markazi", icon: "🏞️" },
+            { name: "Xontor bog'i", category: "dam_olish", lat: 40.8024, lng: 72.9970, description: "Go'zal bog' va sayr joyi", icon: "🏞️" },
+            { name: "Oltin ota maskani", category: "dam_olish", lat: 40.7930, lng: 72.3580, description: "Tabiiy muhitda dam olish", icon: "🏞️" },
+            { name: "Cho'ntak choyxonasi", category: "dam_olish", lat: 40.7930, lng: 72.3580, description: "1-raqamli osh markazi", icon: "🏞️" },
+
+            // Fermer xo'jaliklari - city outskirts
+            { name: "Oltin Asal Agro fermer xo'jaligi", category: "fermer", lat: 40.7780, lng: 72.3420, description: "Zamonaviy fermer xo'jaligi", icon: "🌾" },
+            { name: "Baxt imkon rivoji fermer xo'jaligi", category: "fermer", lat: 40.4718, lng: 72.1634, description: "Qishloq xo'jaligi mahsulotlari", icon: "🌾" },
+
+            // Boshqa joylar - city center and nearby
+            { name: "Bog'i Boburdagi ramziy qabr", category: "boshqa", lat: 40.4319, lng: 72.2620, description: "Bobur xotirasi joyi", icon: "🎯" },
+            { name: "Ibrohim xo'ji uyi", category: "boshqa", lat: 40.4809, lng: 72.1957, description: "Tarixiy uy-muzey", icon: "🎯" },
+            { name: "Shirnombulok", category: "boshqa", lat: 40.5864, lng: 72.4682, description: "Tabiiy bulak", icon: "🎯" },
+            { name: "Shoqsupa", category: "boshqa", lat: 40.7850, lng: 72.3480, description: "Tarixiy joy", icon: "🎯" },
+            { name: "Yo'nsali G'oziyev milliy o'zbek xonadoni", category: "boshqa", lat: 40.5403, lng: 72.3469, description: "Milliy madaniyat maskani", icon: "🎯" },
+            { name: "Jhingirtepa", category: "boshqa", lat: 40.4886, lng: 72.3692, description: "Tarixiy tepalik", icon: "🎯" },
+            { name: "Devonaboy masjidi", category: "boshqa", lat: 40.4716, lng: 72.2024, description: "Masjid", icon: "🎯" },
+            { name: "Sabo hamkor", category: "boshqa", lat: 40.4738, lng: 72.1932, description: "Jamg'arma maskani", icon: "🎯" },
+            { name: "Super modul", category: "boshqa", lat: 40.3629, lng: 72.3627, description: "Zamonaviy savdo markazi", icon: "🎯" },
+            { name: "Qo'shtepa arxeologik yodgorligi", category: "boshqa", lat: 40.4349, lng: 72.5327, description: "Qadimiy shahar qoldiqlari", icon: "🎯" },
+            { name: "Xayvonot bog'i", category: "boshqa", lat: 40.4459, lng: 72.2613, description: "Hayvonlar bilan tanishish", icon: "🎯" }
+        ];
+
+        // Custom icons for different categories
+        const categoryColors = {
+            ziyoratgoh: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+            memoriy: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            muzey: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            dam_olish: 'linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%)',
+            fermer: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+            boshqa: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
+        };
+
+        // Store markers for filtering
+        let markers = [];
+        let clickCounts = {};
+
+        // Create custom div icon
+        function createCustomIcon(category, icon) {
+            return L.divIcon({
+                html: `<div style="background: ${categoryColors[category]}; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 3px solid white;">${icon}</div>`,
+                className: 'custom-div-icon',
+                iconSize: [40, 40],
+                iconAnchor: [20, 20]
+            });
+        }
+
+        // Add markers to map
+        function addMarkersToMap(placesToShow = places) {
+            // Clear existing markers
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = [];
+
+            placesToShow.forEach(place => {
+                const marker = L.marker([place.lat, place.lng], {
+                    icon: createCustomIcon(place.category, place.icon)
+                }).addTo(map);
+
+                const popupContent = `
+                    <div class="popup-content">
+                        <h4>${place.name}</h4>
+                        <p>${place.description}</p>
+                        <div class="category-tag">${getCategoryName(place.category)}</div>
+                    </div>
+                `;
+
+                marker.bindPopup(popupContent);
+
+                // Handle clicks
+                marker.on('click', function() {
+                    const placeId = place.name;
+                    clickCounts[placeId] = (clickCounts[placeId] || 0) + 1;
+
+                    if (clickCounts[placeId] === 1) {
+                        // First click - show popup
+                        marker.openPopup();
+                    } else if (clickCounts[placeId] === 2) {
+                        // Second click - redirect to login
+                        window.location.href = 'places.html';
+                        clickCounts[placeId] = 0; // Reset counter
+                    }
+                });
+
+                markers.push(marker);
+            });
+        }
+
+        // Get category name in Uzbek
+        function getCategoryName(category) {
+            const categoryNames = {
+                ziyoratgoh: 'Ziyoratgoh',
+                memoriy: "Me'moriy majmua",
+                muzey: 'Muzey',
+                dam_olish: 'Dam olish maskani',
+                fermer: "Fermer xo'jaligi",
+                boshqa: 'Boshqa'
+            };
+            return categoryNames[category] || category;
+        }
+
+        // Filter functionality
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Update active button
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                const selectedCategory = this.dataset.category;
+                
+                if (selectedCategory === 'all') {
+                    addMarkersToMap(places);
+                } else {
+                    const filteredPlaces = places.filter(place => place.category === selectedCategory);
+                    addMarkersToMap(filteredPlaces);
+                }
+            });
+        });
+
+        // Initialize map with all markers
+        addMarkersToMap();
+
+        // Add some custom styling to the map
+        map.on('load', function() {
+            console.log('Andijon shahri turizm xaritasi yuklandi!');
+        });
+
+        // Set map bounds to keep focus on Andijan city
+        const regionBounds = [
+        [40.5, 71.9],   // Southwest – covers Shahrixon, Baliqchi, etc.
+        [41.3, 72.9]    // Northeast – covers Bo‘ston, Paxtaobod, Xo‘jaobod
+    ];
+    map.setMaxBounds(regionBounds);
+    map.setMinZoom(9);
+    </script>
+</body>
+</html>

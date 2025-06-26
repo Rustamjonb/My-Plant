@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Natija</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url('img/jome.jpg') center/cover no-repeat fixed;
+      padding: 2rem;
+      text-align: center;
+    }
+    .card {
+      background: #fff;
+      padding: 2rem;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      max-width: 500px;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .info {
+      margin: 1rem 0;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1.2rem;
+      margin: 0.4rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1 id="title">Natija</h1>
+    <img id="image" src="img/mingtepa.jpg" alt="Outcome Image">
+    <div class="info">
+      <p id="description">Ma'lumot yuklanmoqda...</p>
+      <p><strong>Ish vaqti:</strong> <span id="hours"></span></p>
+      <a id="phoneBtn" class="btn" href="#">Qo'ng'iroq qilish</a>
+      <a id="emailBtn" class="btn" href="#">Email yozish</a>
+      <a id="webBtn" class="btn" href="#">Veb-saytga o'tish</a>
+      <a id="bookBtn" class="btn" href="#">Band qilish</a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const outcomes = {
+        1: {
+          title: "Xazina topdingiz!",
+          image: "img/mingtepa.jpg",
+          desc: "Siz yashirin xazinani topdingiz va boy bo'ldingiz.",
+          hours: "08:00 - 20:00",
+          phone: "+998901234567",
+          email: "xazina@example.com",
+          website: "https://xazina.uz",
+          book: "https://xazina.uz/booking"
+        },
+        2: {
+          title: "Tuzoqga tushdingiz!",
+          image: "img/outcome2.jpg",
+          desc: "Afsuski, siz maxfiy tuzoqqa tushib qoldingiz.",
+          hours: "09:00 - 18:00",
+          phone: "+998911234567",
+          email: "tuzoq@example.com",
+          website: "https://tuzoq.uz",
+          book: "https://tuzoq.uz/booking"
+        },
+        // ... outcomes 3 to 15
+        16: {
+          title: "Maxfiy yakun ochildi!",
+          image: "img/outcome16.jpg",
+          desc: "Siz barcha sirlarga yetib keldingiz. Tabriklaymiz!",
+          hours: "24/7",
+          phone: "+998931234567",
+          email: "sirlar@example.com",
+          website: "https://sirlar.uz",
+          book: "https://sirlar.uz/booking"
+        }
+      };
+    
+      const params = new URLSearchParams(window.location.search);
+      const choice = params.get('choice');
+      const data = outcomes[choice];
+    
+      if (data) {
+        document.getElementById('title').innerText = data.title;
+        document.getElementById('image').src = data.image;
+        document.getElementById('description').innerText = data.desc;
+        document.getElementById('hours').innerText = data.hours;
+        document.getElementById('phoneBtn').href = `tel:${data.phone}`;
+        document.getElementById('phoneBtn').innerText = `Qo'ng'iroq qilish: ${data.phone}`;
+        document.getElementById('emailBtn').href = `mailto:${data.email}`;
+        document.getElementById('webBtn').href = data.website;
+        document.getElementById('bookBtn').href = data.book;
+      } else {
+        document.querySelector('.card').innerHTML = '<h2>Natija topilmadi</h2><p>Noto‘g‘ri tanlov raqami.</p>';
+      }
+    });
+    </script>
+    
+</body>
+</html>

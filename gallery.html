@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Gallery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.9);
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .nav-icon {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            text-align: center;
+            min-width: 120px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .nav-icon:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .nav-icon.active {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.5);
+            transform: scale(1.05);
+        }
+
+        .nav-icon-symbol {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .nav-icon-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: none;
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #667eea;
+            border-radius: 50%;
+        }
+
+        /* Personal Photos Section */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .photo-item:hover {
+            transform: scale(1.05);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(102,126,234,0.8), rgba(118,75,162,0.8));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .photo-item:hover .photo-overlay {
+            opacity: 1;
+        }
+
+        /* YouTube Section */
+        .youtube-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .youtube-item {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            background: white;
+        }
+
+        .youtube-item:hover {
+            transform: scale(1.02);
+        }
+
+        .youtube-item iframe {
+            width: 100%;
+            height: 250px;
+            border: none;
+        }
+
+        .youtube-info {
+            padding: 15px;
+        }
+
+        .youtube-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .youtube-channel {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        /* Instagram Section */
+        .instagram-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .instagram-post {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .instagram-post:hover {
+            transform: translateY(-3px);
+        }
+
+        .instagram-header {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .instagram-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            object-fit: cover;
+        }
+
+        .instagram-username {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .instagram-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .instagram-actions {
+            padding: 15px;
+        }
+
+        .instagram-likes {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .instagram-caption {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* Upload Section */
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            background: rgba(102,126,234,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            background: rgba(102,126,234,0.1);
+            border-color: #764ba2;
+        }
+
+        .upload-area.dragover {
+            background: rgba(102,126,234,0.15);
+            border-color: #764ba2;
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .upload-text {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .upload-subtext {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .uploaded-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .uploaded-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .uploaded-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255,0,0,0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            background: rgba(255,0,0,1);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .navigation {
+                gap: 15px;
+            }
+            
+            .nav-icon {
+                min-width: 100px;
+                padding: 15px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+
+            .youtube-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .instagram-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Open Andijan</h1>
+            <p>Galareya</p>
+        </div>
+
+        <div class="navigation">
+            <div class="nav-icon" onclick="showSection('personal')" id="personal-nav">
+                <span class="nav-icon-symbol">📸</span>
+                <span class="nav-icon-text">Rasmlar</span>
+            </div>
+            <div class="nav-icon" onclick="showSection('youtube')" id="youtube-nav">
+                <span class="nav-icon-symbol">📺</span>
+                <span class="nav-icon-text">YouTube</span>
+            </div>
+          
+            <div class="nav-icon" onclick="showSection('upload')" id="upload-nav">
+                <span class="nav-icon-symbol">📤</span>
+                <span class="nav-icon-text">Ulashish</span>
+            </div>
+        </div>
+
+        <!-- Personal Photos & Videos Section -->
+        <div class="section" id="personal-section">
+            <h2 class="section-title">📸 Rasmlar </h2>
+            <div class="photo-grid">
+                <div class="photo-item">
+                    <img src="img/jome.jpg" alt="Jome">
+                    <div class="photo-overlay">Jome masjidi</div>
+                </div>
+                <div class="photo-item">
+                    <img src="img/axmadbek.jpg" alt="AX">
+                    <div class="photo-overlay">Axbadbek Xoji</div>
+                </div>
+                <div class="photo-item">
+                    <img src="img/bagg.jpg" alt="Andijon">
+                    <div class="photo-overlay">Andijon</div>
+                </div>
+                <div class="photo-item">
+                    <img src="img/bbr.jpg" alt="City Lights">
+                    <div class="photo-overlay">Bog'i Bobur</div>
+                </div>
+                <div class="photo-item">
+                    <img src="img/mingtepa.JPG" alt="For">
+                    <div class="photo-overlay">Mingtepa</div>
+                </div>
+                <div class="photo-item">
+                    <img src="img/ark.jpg" alt="Arke">
+                    <div class="photo-overlay">Ark Ichi</div>
+                </div>
+                <div class="photo-item">
+                    <img src="img/hunar.jpg" alt="bloodborne">
+                    <div class="photo-overlay">Hunarmandlar Mavzesi</div>
+                </div>
+                <div class="photo-item">
+                    <img src="img/imom.jpg" alt="Nrh">
+                    <div class="photo-overlay">Imom Ota</div>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- YouTube Videos Section -->
+        <div class="section" id="youtube-section">
+            <h2 class="section-title">📺 YouTube Videos</h2>
+            <div class="youtube-grid">
+                <div class="youtube-item">
+                    <iframe src="https://www.youtube.com/embed/1kyocWKc5_w?autoplay=0" allowfullscreen></iframe>
+                    <div class="youtube-info">
+                        <div class="youtube-title">Welcome to Andijan</div>
+                        <div class="youtube-channel">Made in Andijan</div>
+                    </div>
+                </div>
+                <div class="youtube-item">
+                    <iframe src="https://www.youtube.com/embed/e28p4LIxrGA?autoplay=0" allowfullscreen></iframe>
+                    <div class="youtube-info">
+                        <div class="youtube-title">Imom Ota</div>
+                        <div class="youtube-channel">Sarbon 33</div>
+                    </div>
+                </div>
+                <div class="youtube-item">
+                    <iframe src="https://www.youtube.com/embed/WvMNMSZdpnk?autoplay=0" allowfullscreen></iframe>
+                    <div class="youtube-info">
+                        <div class="youtube-title">Andijon - Farg'ona vodiysi gavhari</div>
+                        <div class="youtube-channel">Roman Postoronniy</div>
+                    </div>
+                </div>
+                <div class="youtube-item">
+                    <iframe src="https://www.youtube.com/embed/vxWPZLNUHa4?autoplay=0" allowfullscreen></iframe>
+                    <div class="youtube-info">
+                        <div class="youtube-title">Trip to Andijan</div>
+                        <div class="youtube-channel">Marad Nadjibayev</div>
+                    </div>
+                </div>
+                <div class="youtube-item">
+                    <iframe src="https://www.youtube.com/embed/y5og_tuzsVE?autoplay=0" allowfullscreen></iframe>
+                    <div class="youtube-info">
+                        <div class="youtube-title">Mingtepa</div>
+                        <div class="youtube-channel">DiscoverUzbekistan</div>
+                    </div>
+                </div>
+                <div class="youtube-item">
+                    <iframe src="https://www.youtube.com/embed/rjgRhmoSHNo?autoplay=0" allowfullscreen></iframe>
+                    <div class="youtube-info">
+                        <div class="youtube-title">Yangi Andijonga sayohat</div>
+                        <div class="youtube-channel">Andijon TV</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instagram Posts Section -->
+        <div class="section" id="instagram-section">
+            <h2 class="section-title">📱 Instagram </h2>
+            <div class="instagram-grid">
+                <div class="instagram-post">
+                    <div class="instagram-header">
+                        <img class="instagram-avatar" src="Img.jpg" alt="User Avatar">
+                        <div class="instagram-username">@nature_explorer</div>
+                    </div>
+                    <img class="instagram-image" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=600&fit=crop" alt="Mountain View">
+                    <div class="instagram-actions">
+                        <div class="instagram-likes">2,847 likes</div>
+                        <div class="instagram-caption"><strong>nature_explorer</strong> Nothing beats the serenity of mountain peaks at sunrise 🏔️ #mountainlife #sunrise #nature</div>
+                    </div>
+                </div>
+                <div class="instagram-post">
+                    <div class="instagram-header">
+                        <img class="instagram-avatar" src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=80&h=80&fit=crop&crop=face" alt="User Avatar">
+                        <div class="instagram-username">@coffee_moments</div>
+                    </div>
+                    <img class="instagram-image" src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&h=600&fit=crop" alt="Coffee Cup">
+                    <div class="instagram-actions">
+                        <div class="instagram-likes">1,293 likes</div>
+                        <div class="instagram-caption"><strong>coffee_moments</strong> Perfect morning brew ☕ Starting the day right with some artisan coffee #coffee #morningvibes</div>
+                    </div>
+                </div>
+                <div class="instagram-post">
+                    <div class="instagram-header">
+                        <img class="instagram-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" alt="User Avatar">
+                        <div class="instagram-username">@urban_photography</div>
+                    </div>
+                    <img class="instagram-image" src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&h=600&fit=crop" alt="City Architecture">
+                    <div class="instagram-actions">
+                        <div class="instagram-likes">3,156 likes</div>
+                        <div class="instagram-caption"><strong>urban_photography</strong> Architecture tells stories that words cannot express 🏢 #architecture #citylife #photography</div>
+                    </div>
+                </div>
+                <div class="instagram-post">
+                    <div class="instagram-header">
+                        <img class="instagram-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face" alt="User Avatar">
+                        <div class="instagram-username">@food_adventures</div>
+                    </div>
+                    <img class="instagram-image" src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=600&h=600&fit=crop" alt="Gourmet Pizza">
+                    <div class="instagram-actions">
+                        <div class="instagram-likes">892 likes</div>
+                        <div class="instagram-caption"><strong>food_adventures</strong> Homemade pizza night! 🍕 Nothing beats fresh ingredients and good company #homemade #pizza #foodie</div>
+                    </div>
+                </div>
+                <div class="instagram-post">
+                    <div class="instagram-header">
+                        <img class="instagram-avatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face" alt="User Avatar">
+                        <div class="instagram-username">@beach_vibes</div>
+                    </div>
+                    <img class="instagram-image" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=600&fit=crop" alt="Tropical Beach">
+                    <div class="instagram-actions">
+                        <div class="instagram-likes">4,721 likes</div>
+                        <div class="instagram-caption"><strong>beach_vibes</strong> Paradise found 🏝️ Crystal clear waters and endless blue skies #tropical #paradise #beach</div>
+                    </div>
+                </div>
+                <div class="instagram-post">
+                    <div class="instagram-header">
+                        <img class="instagram-avatar" src="https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=80&h=80&fit=crop&crop=face" alt="User Avatar">
+                        <div class="instagram-username">@pet_love</div>
+                    </div>
+                    <img class="instagram-image" src="https://images.unsplash.com/photo-1552053831-71594a27632d?w=600&h=600&fit=crop" alt="Golden Retriever">
+                    <div class="instagram-actions">
+                        <div class="instagram-likes">5,934 likes</div>
+                        <div class="instagram-caption"><strong>pet_love</strong> This face melts my heart every day 🐕💕 #dogsofinstagram #goldenretriever #puppy</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Your Photos Section -->
+        <div class="section" id="upload-section">
+            <h2 class="section-title">📤 Oz tasurtlaringizni ulashing</h2>
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📷</div>
+                <div class="upload-text">Suratlaringizni jo'natish</div>
+                <div class="upload-subtext">uchun bosing</div>
+                <input type="file" id="fileInput" class="file-input" multiple accept="image/*">
+            </div>
+            <div class="uploaded-images" id="uploadedImages"></div>
+        </div>
+    </div>
+
+    <script>
+        let uploadedFiles = [];
+
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all nav icons
+            document.querySelectorAll('.nav-icon').forEach(icon => {
+                icon.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName + '-section').classList.add('active');
+            document.getElementById(sectionName + '-nav').classList.add('active');
+        }
+
+        // Upload functionality
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const uploadedImages = document.getElementById('uploadedImages');
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            handleFiles(files);
+        });
+
+        function handleFiles(files) {
+            files.forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const fileData = {
+                            id: Date.now() + Math.random(),
+                            src: e.target.result,
+                            name: file.name
+                        };
+                        uploadedFiles.push(fileData);
+                        displayUploadedImage(fileData);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        function displayUploadedImage(fileData) {
+            const imageContainer = document.createElement('div');
+            imageContainer.className = 'uploaded-item';
+            imageContainer.innerHTML = `
+                <img src="${fileData.src}" alt="${fileData.name}">
+                <button class="remove-btn" onclick="removeImage(${fileData.id})">×</button>
+            `;
+            uploadedImages.appendChild(imageContainer);
+        }
+
+        function removeImage(id) {
+            uploadedFiles = uploadedFiles.filter(file => file.id !== id);
+            const imageElements = uploadedImages.children;
+            for (let i = 0; i < imageElements.length; i++) {
+                const removeBtn = imageElements[i].querySelector('.remove-btn');
+                if (removeBtn && removeBtn.onclick.toString().includes(id)) {
+                    uploadedImages.removeChild(imageElements[i]);
+                    break;
+                }
+            }
+        }
+
+        // Show first section by default
+        // showSection('personal');
+    </script>
+</body>
+</html>

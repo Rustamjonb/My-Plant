@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dunyo Sadolari Festivali</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            background: url('img/dunyo.jpg') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 12px;
+            color: white;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .title {
+            font-size: 32px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .music-icon {
+            font-size: 30px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .music-icon:hover {
+            transform: scale(1.2);
+        }
+        p {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .guests {
+            list-style: none;
+            padding: 0;
+            font-weight: bold;
+        }
+        .guests li {
+            font-size: 20px;
+            margin: 5px 0;
+        }
+        .join-btn {
+            display: inline-block;
+            background: #ff5733;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+        .join-btn:hover {
+            background: #c70039;
+        }
+    </style>
+</head>
+<body class="dunyo-page">
+
+<audio id="bg-music" loop>
+    <source src="img/andi.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+    <h1 class="title">
+        <span class="music-icon" onclick="playMusic()">🎵</span> 
+        Dunyo Sadolari 2024
+    </h1>
+    <p>Butun dunyo san'at yulduzlari Xonobod shahrida!</p>
+    <h2>📅 Festival sanasi: 29-31 iyul</h2>
+    <h3>🎤 Mehmon xonandalar:</h3>
+    <ul class="guests">
+        <li>Jah Khalib</li>
+        <li>Jony</li>
+        <li>INNA</li>
+        <li>Sevara Nazarxon</li>
+        <li>Shahzoda</li>
+    </ul>
+    <p>Eng yorqin musiqa kechasiga tayyor bo'ling!</p>
+    <a href="login.html" class="join-btn">Qo'shilish</a>
+</div>
+
+<script src="script.js" defer></script>
+
+</body>
+</html>

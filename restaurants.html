@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Andijon Sayohat Maskanlari</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: url('img/ahmed.jpg') center/cover no-repeat fixed;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      min-height: 100vh;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      color: #f9f9f9;
+      text-shadow: 0 0 10px #000;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 1300px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #ffde59;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-slogan {
+      font-size: 0.95rem;
+      color: #e0e0e0;
+    }
+    .btn {
+      background: #ffde59;
+      color: #000;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s ease;
+      display: inline-block;
+    }
+
+    /* Modal styles */
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .modal.active {
+      display: flex;
+      overflow: auto;
+    }
+
+    .modal-content {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      max-width: 600px;
+      width: 90%;
+      padding: 1.5rem;
+      color: #fff;
+      text-align: center;
+      position: relative;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .modal-content img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+
+    .modal-content p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal-content .btn {
+      background: #ffde59;
+      color: #000;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s ease;
+      display: inline-block;
+    }
+
+    .modal-content .btn:hover {
+      background: #f4c400;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px; right: 15px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #ccc;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <h1>Mehmonxonalar</h1>
+ 
+  <a href="booking.html"><button  class="btn">Saqlanganlar</button></a>
+  <div class="grid">
+    <!-- 21 cards -->
+  
+      <div class="card" onclick="openModal(1)">
+        <img src="img/uzbeg.jpg" alt="Joy 1">
+        <div class="card-content">
+          <div class="card-title">O'zbegim</div>
+          <div class="card-slogan">Choyxona</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(2)">
+        <img src="img/shukrona.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">La Veranda</div>
+          <div class="card-slogan">Restaurant</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(3)">
+        <img src="img/hilol.jpg" alt="Joy 1">
+        <div class="card-content">
+          <div class="card-title">Al Hilol </div>
+          <div class="card-slogan">Milliy va Parxez taomlari</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(4)">
+        <img src="img/ahmed.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Sultan Ahmed
+            </div>
+          <div class="card-slogan">Restaurant</div>
+        </div>
+      </div>      
+      <div class="card" onclick="openModal(5)">
+        <img src="img/kebab.jpg" alt="Joy 1">
+        <div class="card-content">
+          <div class="card-title">Istambul Kebab</div>
+          <div class="card-slogan">Restaurant</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(6)">
+        <img src="img/belissimo.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Belissimo</div>
+          <div class="card-slogan">Pizza</div>
+        </div>
+      </div>      
+     
+      
+  
+
+  <!-- 21 modals -->
+ 
+    <div class="modal" id="modal-1">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal(1)">&times;</span>
+        <img src="img/uzbeg.jpg" alt="Joy 1}">
+        <p><strong>O'zbegim - </strong> Reyting - 4.8
+          </p>
+          <p>Milliy va chet el tamomlari mohir oshpazlar tomonidan tayyorlanadi</p>Ish vaqti - Har kuni</p> <p>08:00 - 23:00</p><p>Yetkazib berish - MAVJUD!</p>
+        
+        <button onclick="addToCart('restaurants', 'uzbeg')" class="btn">Saqlash</button>
+      </div>
+    </div>
+    <div class="modal" id="modal-2">
+        <div class="modal-content">
+          <span class="close-btn" onclick="closeModal(2)">&times;</span>
+          <img src="img/shukrona.jpg" alt="Joy 2}">
+          <p><strong>La Veranda- </strong> Reyting - 4.7
+          </p>
+          <p>Milliy va chet el tamomlari mohir oshpazlar tomonidan tayyorlanadi</p>Ish vaqti - Har kuni</p> <p>08:00 - 23:00</p><p>Yetkazib berish - MAVJUD!</p>
+        
+          <button onclick="addToCart('restaurants', 'shukrona')" class="btn">Saqlash</button>
+        </div>
+      </div>
+      <div class="modal" id="modal-3">
+        <div class="modal-content">
+          <span class="close-btn" onclick="closeModal(3)">&times;</span>
+          <img src="img/hilol.jpg" alt="Joy 1}">
+          <p><strong>Al-Hilol - </strong> Reyting - 4.0
+          </p>
+          <p>Milliy va chet el tamomlari mohir oshpazlar tomonidan tayyorlanadi</p>Ish vaqti - Har kuni</p> <p>08:00 - 23:00</p><p>Yetkazib berish - MAVJUD!</p>
+          <button onclick="addToCart('restaurants', 'hilol')" class="btn">Saqlash</button>
+        </div>
+      </div>
+      <div class="modal" id="modal-4">
+          <div class="modal-content">
+            <span class="close-btn" onclick="closeModal(4)">&times;</span>
+            <img src="img/ahmed.jpg" alt="Joy 2}">
+            <p><strong>Sultan Ahmed - </strong> Reyting - 4.6
+            </p>
+            <p>Milliy va chet el tamomlari mohir oshpazlar tomonidan tayyorlanadi</p>Ish vaqti - Har kuni</p> <p>08:00 - 23:00</p><p>Yetkazib berish - MAVJUD!</p>
+            <button onclick="addToCart('restaurants', 'ahmed')" class="btn">Saqlash</button>
+          </div>
+        </div> <div class="modal" id="modal-5">
+          <div class="modal-content">
+            <span class="close-btn" onclick="closeModal(5)">&times;</span>
+            <img src="img/kebab.jpg" alt="Joy 1}">
+            <p><strong>Istambul Kebab- </strong> Reyting - 4.6
+            </p>
+            <p>Milliy va chet el tamomlari mohir oshpazlar tomonidan tayyorlanadi</p>Ish vaqti - Har kuni</p> <p>08:00 - 23:00</p><p>Yetkazib berish - MAVJUD!</p>
+            
+            <button onclick="addToCart('restaurants', 'kebab')" class="btn">Add Mingtepa</button>
+          </div>
+        </div>
+        <div class="modal" id="modal-6">
+            <div class="modal-content">
+              <span class="close-btn" onclick="closeModal(6)">&times;</span>
+              <img src="img/belissimo.jpg" alt="Joy 2}">
+              <p><strong>Belissimo </strong> Reyting - 4.2
+              </p>
+              <p>Milliy va chet el tamomlari mohir oshpazlar tomonidan tayyorlanadi</p>Ish vaqti - Har kuni</p> <p>08:00 - 23:00</p><p>Yetkazib berish - MAVJUD!</p>
+              <button onclick="addToCart('restaurants', 'belissimo')" class="btn">Saqlash</button>
+            </div>
+         
+              
+  
+
+  <script>
+    function openModal(id) {
+      document.getElementById('modal-' + id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById('modal-' + id).classList.remove('active');
+    }
+
+    // Close modals when clicking outside
+    window.addEventListener('click', function(e) {
+      document.querySelectorAll('.modal').forEach(modal => {
+        if (e.target === modal) modal.classList.remove('active');
+      });
+    });
+    function addToCart(category, id) {
+      let cart = JSON.parse(localStorage.getItem("tourCart")) || {
+        places: [],
+        restaurants: [],
+        events: []
+      };
+    
+      if (!cart[category].includes(id)) {
+        cart[category].push(id);
+        localStorage.setItem("tourCart", JSON.stringify(cart));
+        alert(`${id.toUpperCase()} added to your tour package.`);
+      } else {
+        alert(`${id.toUpperCase()} already in your tour package.`);
+      }
+    }
+  </script>
+</body>
+</html>

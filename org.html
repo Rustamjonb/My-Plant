@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sayohatchilar uchun xizmatlar - O'zbekiston</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('img/bg.jpg') center/cover fixed;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(2px);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .search-box {
+            display: flex;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 5px;
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .search-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 15px 20px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .search-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 50px;
+            padding: 15px 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .search-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .service-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        .service-card:nth-child(1) { animation-delay: 0.1s; }
+        .service-card:nth-child(2) { animation-delay: 0.2s; }
+        .service-card:nth-child(3) { animation-delay: 0.3s; }
+        .service-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .service-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .service-desc {
+            color: rgba(255,255,255,0.8);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .service-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .service-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.7);
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 80vw;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: transform 0.3s ease;
+            color: white;
+        }
+
+        .modal.show .modal-content {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .close:hover {
+            transform: scale(1.2);
+            color: #ff6b6b;
+        }
+
+        .location-list {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .location-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .location-item:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateX(10px);
+        }
+
+        .location-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .location-address {
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        .location-phone {
+            color: #4CAF50;
+            font-weight: 600;
+        }
+
+        .emergency-section {
+            background: rgba(255,77,77,0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            border: 1px solid rgba(255,77,77,0.3);
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        .emergency-title {
+            color: #ff4d4d;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .emergency-numbers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .emergency-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .emergency-service {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: white;
+        }
+
+        .emergency-number {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #4CAF50;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(255,255,255,0.8);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .emergency-numbers {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                max-width: 95vw;
+                padding: 20px;
+            }
+        }
+
+        .floating-help {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .floating-help:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(102,126,234,0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Sayohatchilar uchun xizmatlar</h1>
+            <p>O'zbekistonda kerakli xizmatlarni toping</p>
+        </div>
+
+       
+
+        <div class="services-grid">
+            <div class="service-card" onclick="openModal('banks')">
+                <div class="service-icon">🏦</div>
+                <h3 class="service-title">Banklar</h3>
+                <p class="service-desc">Yaqin atrofdagi banklar va ularning ish vaqtlari</p>
+                <button class="service-btn">Banklar ro'yxati</button>
+            </div>
+
+          
+
+
+            <div class="service-card" onclick="openModal('taxis')">
+                <div class="service-icon">🚕</div>
+                <h3 class="service-title">Taksi</h3>
+                <p class="service-desc">Taksi xizmatlari va transport</p>
+                <button class="service-btn">Taksi chaqirish</button>
+            </div>
+        </div>
+
+        <div class="emergency-section">
+            <h2 class="emergency-title">⚠️ Favqulodda vaziyat raqamlari</h2>
+            <p style="color: rgba(255,255,255,0.9); margin-bottom: 20px;">Muhim: Ushbu raqamlar 24/7 ishlab turadi</p>
+            
+            <div class="emergency-numbers">
+                <div class="emergency-item">
+                    <div class="emergency-service">Tez yordam</div>
+                    <div class="emergency-number">103</div>
+                </div>
+              
+                <div class="emergency-item">
+                    <div class="emergency-service">Politsiya</div>
+                    <div class="emergency-number">102</div>
+                </div>
+                <div class="emergency-item">
+                    <div class="emergency-service">Favqulodda vaziyatlarda</div>
+                    <div class="emergency-number">1050</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="floating-help" onclick="showHelp()" title="Yordam">❓</button>
+
+    <!-- Modals -->
+    <div id="banksModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('banksModal')">&times;</span>
+            <h2>🏦 Banklar ro'yxati</h2>
+            <div class="location-list">
+                <div class="location-item">
+                    <div class="location-name">Hamkorbank</div>
+                    <div class="location-address">Prospekt Babura 85, 170103, Andijan, Andijan region, Узбекистан</div>
+                    <div class="location-phone">📞 +998742980898</div>
+                </div>
+                <div class="location-item">
+                    <div class="location-name">Sanoat Qurilish Bank</div>
+                    <div class="location-address">уй, Андижан улица Бабура, Чўлпон 100 йиллиги МФЙ, Бобур шоҳ кўчаси 36, 170119, Andijan, Andijan region, Узбекистан</div>
+                    <div class="location-phone">📞 +998712004343</div>
+                </div>
+                <div class="location-item">
+                    <div class="location-name">Xalq Banki</div>
+                    <div class="location-address">Q8QX+366, Andijon, Andijon Viloyati, Узбекистан</div>
+                    <div class="location-phone">📞 +998 71 203-33-33</div>
+                </div>
+                <div class="location-item">
+                    <div class="location-name">Agrobank</div>
+                    <div class="location-address">Q965+M5G, Unnamed Road, Andijan, Андижанская область, Узбекистан</div>
+                    <div class="location-phone">📞 +998 71 202-80-00</div>
+                </div>
+                <div class="location-item">
+                    <div class="location-name">Infinbank</div>
+                    <div class="location-address">улица Истиклол 38, 170100, Andijon, Andijon Viloyati, Узбекистан</div>
+                    <div class="location-phone">📞 +998712025060</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+   
+
+    <div id="taxisModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('taxisModal')">&times;</span>
+            <h2>🚕 Taksi xizmatlari</h2>
+            <div class="location-list">
+                <div class="location-item">
+                    <div class="location-name">Yandex Taxi</div>
+                    <div class="location-address">Mobil ilova orqali</div>
+                    <div class="location-phone">📱 Ilovani yuklab oling</div>
+                </div>
+                <div class="location-item">
+                    <div class="location-name">MyTaxi</div>
+                    <div class="location-address">Onlayn buyurtma</div>
+                    <div class="location-phone">📞 +998 71 200-70-07</div>
+                </div>
+                <div class="location-item">
+                    <div class="location-name">UzTaxi</div>
+                    <div class="location-address">Mahalliy taksi xizmati</div>
+                    <div class="location-phone">📞 +998 71 299-99-99</div>
+                </div>
+                <div class="location-item">
+                    <div class="location-name">Shahar Taksisi</div>
+                    <div class="location-address">Telefon orqali chaqiring</div>
+                    <div class="location-phone">📞 +998 71 140-10-10</div>
+                </div>
+                <div class="location-item">
+                    <div class="location-name">Express Taxi</div>
+                    <div class="location-address">24/7 xizmat</div>
+                    <div class="location-phone">📞 +998 71 129-12-12</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(modalType) {
+            const modal = document.getElementById(modalType + 'Modal');
+            modal.style.display = 'block';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        function performSearch() {
+            const searchTerm = document.getElementById('searchInput').value;
+            if (searchTerm.trim()) {
+                alert('Qidiruv: "' + searchTerm + '"\nTez orada bu funksiya qo\'shiladi!');
+            }
+        }
+
+        function showHelp() {
+            alert('Yordam:\n\n' +
+                  '• Xizmat turini tanlang\n' +
+                  '• Manzil va telefon raqamlarini ko\'ring\n' +
+                  '• Favqulodda vaziyatlarda 103, 101, 102 raqamlariga qo\'ng\'iroq qiling\n' +
+                  '• Qidiruv orqali ma\'lum manzilni toping');
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.classList.remove('show');
+                    setTimeout(() => modal.style.display = 'none', 300);
+                }
+            });
+        }
+
+        // Enter key search
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Add smooth scrolling
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.service-card');
+            cards.forEach((card, index) => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px) scale(1.05)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

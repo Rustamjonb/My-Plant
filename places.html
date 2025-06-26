@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Andijon Sayohat Maskanlari</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: url('img/jome.jpg') center/cover no-repeat fixed;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      min-height: 100vh;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      color: #f9f9f9;
+      text-shadow: 0 0 10px #000;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 1300px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #ffde59;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-slogan {
+      font-size: 0.95rem;
+      color: #e0e0e0;
+    }
+    .btn {
+      background: #ffde59;
+      color: #000;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s ease;
+      display: inline-block;
+    }
+
+    /* Modal styles */
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .modal.active {
+      display: flex;
+      overflow: auto;
+    }
+
+    .modal-content {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      max-width: 600px;
+      width: 90%;
+      padding: 1.5rem;
+      color: #fff;
+      text-align: center;
+      position: relative;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .modal-content img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+
+    .modal-content p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal-content .btn {
+      background: #ffde59;
+      color: #000;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s ease;
+      display: inline-block;
+    }
+
+    .modal-content .btn:hover {
+      background: #f4c400;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px; right: 15px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #ccc;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <h1>Andijon Viloyatining Sayyohlik Maskanlari</h1>
+ 
+  <a href="booking.html"><button  class="btn">Saqlanganlar</button></a>
+  <div class="grid">
+    <!-- 21 cards -->
+  
+      <div class="card" onclick="openModal(1)">
+        <img src="img/mingtepa.jpg" alt="Joy 1">
+        <div class="card-content">
+          <div class="card-title">Mingtepa</div>
+          <div class="card-slogan">Qadimiy Dovon davlati poytaxti</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(2)">
+        <img src="img/imom.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Imom Ota</div>
+          <div class="card-slogan">Tabiat qo'ynidagi ziyoratgoh</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(3)">
+        <img src="img/axmadbek.jpg" alt="Joy 1">
+        <div class="card-content">
+          <div class="card-title">Axmadbek Xoji mehmonxonasi</div>
+          <div class="card-slogan"></div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(4)">
+        <img src="img/hunar.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Xunarmandchilik etnografik zonasi
+            </div>
+          <div class="card-slogan">Sayohat uchun eng yaxshi tanlov</div>
+        </div>
+      </div>      
+      <div class="card" onclick="openModal(5)">
+        <img src="img/shirmon.jpg" alt="Joy 1">
+        <div class="card-content">
+          <div class="card-title">Shirmonbuloq</div>
+          <div class="card-slogan">Dam olish maskani</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(6)">
+        <img src="img/jome.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Jome memoriy majmuasi</div>
+          <div class="card-slogan"></div>
+        </div>
+      </div>      
+      <div class="card" onclick="openModal(7)">
+        <img src="img/bbr.jpg" alt="Joy 1">
+        <div class="card-content">
+          <div class="card-title">Bog'i-Bobur</div>
+          <div class="card-slogan">Memoriy yodgorlik va ramziy qabr </div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(8)">
+        <img src="img/xontog.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Xontog' Bog'i</div>
+          <div class="card-slogan">Sayohat uchun eng yaxshi tanlov</div>
+        </div>
+      </div>     
+       <div class="card" onclick="openModal(9)">
+        <img src="img/orda.jpg" alt="Joy 1">
+        <div class="card-content">
+          <div class="card-title">Oltin-Orda </div>
+          <div class="card-slogan">Dam olish maskani</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(10)">
+        <img src="img/qosh.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Qo'shtepa </div>
+          <div class="card-slogan">Arxeologik yodgorlik</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(11)">
+        <img src="img/yu.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Yunusali Go'zoyev</div>
+          <div class="card-slogan">Milliy O'zbek Xonadoni</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(12)">
+        <img src="img/shoxsupa.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Shoxsupa</div>
+          <div class="card-slogan">Sayohat uchun eng yaxshi tanlov</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(16)">
+        <img src="img/qala.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Qal'a </div>
+          <div class="card-slogan">Memoriy majmuasi</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(13)">
+        <img src="img/bibi.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Bibi Seshanba</div>
+          <div class="card-slogan">Ziyoratgoxi</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(14)">
+        <img src="img/ark.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Ark Ichi </div>
+          <div class="card-slogan">Memoriy yodgorligi</div>
+        </div>
+      </div>
+      <div class="card" onclick="openModal(15)">
+        <img src="img/xonobod.jpg" alt="Joy 2">
+        <div class="card-content">
+          <div class="card-title">Xonobod</div>
+          <div class="card-slogan">Sihatgohi</div>
+        </div>
+      </div>
+  </div>
+
+  
+
+  <!-- 21 modals -->
+ 
+    <div class="modal" id="modal-16">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal(16)">&times;</span>
+        <img src="img/qala.jpg" alt="Joy 1}">
+        <p><strong>Qal'a memoriy yodgorligi </strong> — Chor Rossiyasi harbiy qismi uchun mudofaa qoʻrgʻoni sifatida bunyod etilgan. Qal'aning 10 metrdan ortiq baland boʻlgan devorlaridan Andijon shahrining har mahalla, koʻchalar kaftdek koʻrinib turgan va shu joydan turib isyonlarni bostirish imkoniyati boʻlgan. Uning bir necha kazarma binolari, qurol aslaha omborlari, oshxona, toʻpxonalardan iborat mudofaa qoʻrgʻoni boʻlgan. Qal'ada Chor Rossiya armiyasining Turkiston asosiy muntazam harakatdagi bataloni 4-5-rotalariga tegishli 250 dan ortiq askarlari turgan.
+          Qal'a 130 yil davomida juda koʻp tarixiy voqealarni, 1898 yil Dukchi Eshon boshchiligidagi Andijon qoʻzgʻolonini (qoʻzgʻolon ayovsiz bostirilib,
+          19 nafar qoʻzgʻolonchi Qal'a maydonida osib oʻldirildi. Bu er dastlabki shahidlar maskaniga aylandi) fojialarni guvohi boʻlgan.
+          </p>
+        
+        <button onclick="addToCart('places', 'qala')" class="btn">Saqlash</button>
+      </div>
+    </div>
+    <div class="modal" id="modal-14">
+        <div class="modal-content">
+          <span class="close-btn" onclick="closeModal(14)">&times;</span>
+          <img src="img/ark.jpg" alt="Joy 2}">
+          <p><strong>Ark ichi</strong> — Yodgorlikni qurilgan davri xaqida aniq tarixiy ma'lumot saqlanmagan. Sharqshunos olim M.Abdurahmonovning XIVa srda yashab oʻtgan olim Hamdallox Kazviniyning “Nusrat ul- qulub” asariga asoslanib bergan ma'lumotiga koʻra, madrasa XIV asrda Xojar ismli shahar  hukumdori tomonidan qurdirilgan. Madrasa Zahiriddin Boburning otasi Umarshayx Mirzo arki oʻramida boʻlib, keyingi 7-8 asr davomida bir necha bor ta'mirlangan.
+            Ushbu me'morchilik yodgorligi 27 ta xujra, 3 ta gumbazli darsxona, talabalarga moʻljallangan  kichkina yopiq va ayvonli namozgohdan tashkil topgan.
+            </p>
+        
+          <button onclick="addToCart('places', 'ark')" class="btn">Saqlash</button>
+        </div>
+      </div>
+      <div class="modal" id="modal-3">
+        <div class="modal-content">
+          <span class="close-btn" onclick="closeModal(3)">&times;</span>
+          <img src="img/axmadbek.jpg" alt="Joy 1}">
+          <p><strong>Axmadbek Xoji mehmonxonasi -</strong> Alisher Navoiy nomli Andijon shaxar madaniyat va istirohat bogʻining sharqiy tomonida joylashgan mazkur me'moriy obida 1905 – 1907 yillari andijonlik yirik boy, paxta zavodining egasi Ahmadbekxoji Temurbek oʻgʻli buyurtmasi bilan mehmonxona va ish yuritish joyi sifatida bunyod etilgan.  (Ahmadbek xoji  Qoshgʻarga  ketib qolgan) Qurilishda  oʻz davrining taniqli me'morlaridan Usta Yusufali Musaev (1869 – 1947, Oʻzbekiston xalq me'mori, OʻzFA sining faxriy a'zosi) hamda Usta Toshxon va Usta Yahyo va ularning shogirdlari ishtirok etgan. Me'moriy yodgorlik xalq amaliy bezak san'atining sir naqqoshlik va ganch oʻymakorligi turlari bilan bezatilgan. Sir naqqoshlik san'ati ustasi Qoʻqonlik Saidmahmud Norqoʻziev (Oʻzbekiston xalq rassomi).</p>
+        
+          <button onclick="addToCart('places', 'axmadbek')" class="btn">Saqlash</button>
+        </div>
+      </div>
+      <div class="modal" id="modal-7">
+          <div class="modal-content">
+            <span class="close-btn" onclick="closeModal(7)">&times;</span>
+            <img src="img/bbr.jpg" alt="Joy 2}">
+            <p><strong>Bog'i-Bobur</strong> — Mazkur yodgorlik “Bobur” xalqaro jamoat fondi raisi Zokirjon Mashrapov tashabbusi bilan bunyod etilgan boʻlib, ushbu joyga Zahiriddin Muhammad Boburning Qobuldagi qabridan tuprogʻi olib kelingan.</p>
+          
+            <button onclick="addToCart('places', 'bbr')" class="btn">Saqlash</button>
+          </div>
+        </div> <div class="modal" id="modal-1">
+          <div class="modal-content">
+            <span class="close-btn" onclick="closeModal(1)">&times;</span>
+            <img src="img/mingtepa.jpg" alt="Joy 1}">
+            <p><strong>Mingtepa</strong> — Andijon viloyati, Marxamat tumanining sharqiy qismida,
+              Andijon shahri markazidan 38 km uzoqlikda joylashgan. Miloddan
+              avvalgi V-IV va milodning IV asrlarida xukm surgan Dovon davlatining
+              poytaxti boʻlgan Ershi shaxrining xarobalaridir. U keyinchalik Mingtepa
+              deb nom olgan Ershi 70 shahardan tarkib topgan.
+              Qadimda bu katta savdo shahri orqali “Buyuk ipak yoʻli” oʻtgan.Xitoy yozma
+              manbalarida tilga olingan bu maxobatli shahar oʻzining hunarmandchiligi,
+              dexqonchiligi va “Samoviy tulporlari” bilan dunyoga mashxur boʻlib oʻz
+              davrida Xitoy davlati bilan raqobatlashgan.
+              </p>
+            
+            <button onclick="addToCart('places', 'mingtepa')" class="btn">Add Mingtepa</button>
+          </div>
+        </div>
+        <div class="modal" id="modal-5">
+            <div class="modal-content">
+              <span class="close-btn" onclick="closeModal(5)">&times;</span>
+              <img src="img/shirmon.jpg" alt="Joy 2}">
+              <p><strong>Shirmonbuloq</strong> — Muqaddas Shirmonbuloq inson salomatligini tiklash yoʻlida muhim ahamiyat kasb etadi. Manbalarda bu hududdagi Toshtepa, Sortepa, Shoʻrtepa va boshqa arxeologiya yodgorliklari eramizdan avvalgi VI-II asrlarda ham qadimiy aholi manzillari boʻlganligiga guvohlik beradi. Qadimiy buloq “Chirmon” (Yaylov) ya'ni “Yaylovdagi buloq” deb yuritilgan va bu joyni ilonlar oʻzlariga makon qilgan ekan.</p>
+              
+              <button onclick="addToCart('places', 'shirmonbuloq')" class="btn">Saqlash</button>
+            </div>
+          </div> <div class="modal" id="modal-13">
+            <div class="modal-content">
+              <span class="close-btn" onclick="closeModal(13)">&times;</span>
+              <img src="img/bibi.jpg" alt="Joy 1}">
+              <p><strong>Bibiseshanba</strong> — ziyoratgohi 200 yil avval tashkil etilgan boʻlib, hozirda ziyoratgohga mahalliy hamda xorijiy sayyohlar buloq suvlaridan shifo olish uchun qeladilar. Ziyoratgoh atrofida shifobahsh hisoblangan “Koʻk buloq”, “Soʻngal buloq”, “Yara-chaqa buloq”lari mavjud. Ziyoratgoh qadamjodir, har chorshanba kuni bu erga kelib qizlar kokil kestiradi hamda farzand koʻrmaganlar oʻzlariga farzand tilaydilar. </p>
+            
+              <button onclick="addToCart('places', 'bibi')" class="btn">Saqlash</button>
+            </div>
+          </div>
+          <div class="modal" id="modal-8">
+              <div class="modal-content">
+                <span class="close-btn" onclick="closeModal(8)">&times;</span>
+                <img src="img/xontog.jpg" alt="Joy 2}">
+                <p><strong>Xontog'</strong> —Bogʻ 60 гектар maydonda joylashgan boʻlib, oʻrtacha
+                  150 метр balandlikda joylashgan. Bogʻda sayilgohlar, dam olish joylari, yulaklar, bolalar madoni va osma yul mavjud.
+                  </p>
+              
+                <button onclick="addToCart('places', 'xontog')" class="btn">Saqlash</button>
+              </div>
+            </div> <div class="modal" id="modal-12">
+              <div class="modal-content">
+                <span class="close-btn" onclick="closeModal(12)">&times;</span>
+                <img src="img/shoxsupa.jpg" alt="Joy 1}">
+                <p><strong>Shoxsupa</strong> — Balandligi 25 метр boʻlgan “Shox supa” me'morchilik yodgorligining umumiy maydoni 0.95 гектарга тенг. Ushbu yodgorlik milliy hunarmandchilik uslubida barpo etilgan. Bu erda Xonobod shahrining eng asosiy tadbirlari, umumxalq bayramlari nishonlanadi.</p>
+              
+                <button onclick="addToCart('places', 'shoxsupa')" class="btn">Saqlash</button>
+              </div>
+            </div>
+            <div class="modal" id="modal-2">
+                <div class="modal-content">
+                  <span class="close-btn" onclick="closeModal(2)">&times;</span>
+                  <img src="img/imom.jpg" alt="Joy 2}">
+                  <p><strong>Imom Ota</strong> — Ziyoratgoh qadimdan islom olamida munosib oʻrin tutgan Imomi Muhammad Hanafiya nomi bilan atalib kelingan. Tadqiqotchilardan N.Abdulahadov, V.Azimovlarning “Oltiariq ziyoratgohlari” kitobida yozilishicha, “Nasibanomayi Muhammad Hanafiya” kitobida keltirishicha islom lashkarboshisi Xazrati Alining oʻgʻli Muhammad Hanafiya Xurosonni zabt etib, aholisini islomga kirishida xizmatlari katta boʻlganligi uchun “Xuroson ota”, “Imom ota” nomini olgan, shuning uchun bu oʻlkada Bobo Xuroson, Imom ota nomlari bilan bogʻliq diqqatga sazovor joylar mavjud. XVIII asrga oid ziyoratxona-xonaqox, XIX asr oxirlarida  Andijonlik Maxmudaliboy tomonidan qayta kilingan. Ushbu ob'ekt 1982-yilda me'moriy yodgorlik sifatida davlat muhofazasiga olingan.
+
+                  </p>
+                
+                  <button onclick="addToCart('places', 'imom')" class="btn">Saqlash</button>
+                </div>
+              </div>
+              <div class="modal" id="modal-11">
+                <div class="modal-content">
+                  <span class="close-btn" onclick="closeModal(11)">&times;</span>
+                  <img src="img/yu.jpg" alt="Joy 2}">
+                  <p><strong>Yunusali Gʻoziev xonadoni</strong> —Yu.Gʻoziev mashhur dorboz Toshkenboevlarning shogirdlaridan. 1985 yili “Andijon samo”si dorbozlar guruhiga asos soldi. Farzandlari Alijon, Murodjonlarni yoniga tortdi. Bugun nabiralari Diyorbek, Durdona, Davronbek va Akbarali ham samoda parvoz qilishni oʻrganib, tomoshabinlarga quvonch ulashmoqdalar.
+                    Oʻzbek milliy sirk san'ati an'analarini davom ettirish, uni yangi gʻoyalar, urf-odatlar, milliy-ma'naviy qadriyatlar bilan boyitishga ahd qilgan otaxon salkam bir gektarli hovlisidan oʻtgan katta ariqni ketmon bilan chopib, qirgʻoqlariga ishlov berib, 180 metrli etnografik “muzey” barpo qildi. Zakan qirgʻoqlaridagi tut, olma, behi daraxtlariga shakl berib, ularning ustiga oʻrindiqlar oʻrnatdi.
+                     </p>
+                
+                  <button onclick="addToCart('places', 'yu')" class="btn">Saqlash</button>
+                </div>
+              </div>
+              <div class="modal" id="modal-9">
+                <div class="modal-content">
+                  <span class="close-btn" onclick="closeModal(9)">&times;</span>
+                  <img src="img/orda.jpg" alt="Joy 2}">
+                  <p><strong>Oltin O'rda</strong> — Oʻzbek-Qirgʻiz millatlarining doʻstlik rishtalari ramzi boʻlgan Oltin Orda dam olish maskani soʻlim Xonobodning Istiqlol MFY hududida jyolashgan. Ushbu dam olish maskaniga tashrif buyurgan sayyohlar Qirgʻiz oshxonasiga xos boʻlgan betakror taomlardan tatib koʻrishlari, oʻziga xos baxovo tabiatidan baxramand boʻlishlari mumkin. Qirgʻiz milliy oʻtovlarida Qirgʻiziston respublikasidan keltirilgan qimiz, qovurdoqlarlar sayyoxlarga albatta maqul keladi.</p>
+                
+                  <button onclick="addToCart('places', 'orda')" class="btn">Saqlash</button>
+                </div>
+              </div>
+              <div class="modal" id="modal-15">
+                <div class="modal-content">
+                  <span class="close-btn" onclick="closeModal(15)">&times;</span>
+                  <img src="img/xonobod.jpg" alt="Joy 2}">
+                  <p><strong>Xonobod  </strong> —vodiyning goʻzal tabiatli, musaffo havoli, ekoturizm uchun qulay hududi. Bu erda Siz hordiq chiqarish bilan birga betakror tabiat manzaralaridan zavq olasiz. Sihatgohda mijozlarga yuqori sifatli xizmat koʻrsatish uchun barcha qulayliklar mavjud. Keng va yorugʻ xonalar eng soʻnggi zamonaviy tibbiyot uskunalari bilan ta'minlangan.
+                    Andijon viloyatining soʻlim goʻshasida dengiz sathidan 850 m balandlikda joylashgan iqlimiy kurort sanaladi. Sanatoriy oʻzining kislorod bilan toʻyingan, ionlashtirilgan havosi bilan yuqori va quyi nafas yoʻllari, asab tizimi, yurak qon-tomir kasalliklarini davolashga ixtisoslashtirilgan.
+                    «Xonobod» sanatoriysining hududi 10,5 gektarni egallaydi. Barcha sanatoriy korpuslari park zonasida joylashgan, va koʻm-koʻk daraxtlar va gullarga burkangan.
+                    Koʻkalamzor ekinlar qayragʻochlar, teraklar, emanlar, yongʻoq darajtlari, oq akasiyalar, klenlar, kashtanlar, archalar, chinorlar, archa butalari, bujun va boshqa daraxtlardan iborat.
+                    Sanatoriyning asosiy davolaydigan omili – yuqori haroratli suv (er yuzasida chiqishda harorati I 18°S dan + 44°S gacha).
+                    
+                     </p>
+                
+                  <button onclick="addToCart('places', 'Xonobot')" class="btn">Saqlash</button>
+                </div>
+              </div>
+              <div class="modal" id="modal-10">
+                <div class="modal-content">
+                  <span class="close-btn" onclick="closeModal(10)">&times;</span>
+                  <img src="img/qoshtepa.jpg" alt="Joy 2}">
+                  <p><strong>Qo'shtepa </strong> —Ushbu qadimiy yodgorlik deyarli bir gektar erni egallagan boʻlib, balandligi 4-7 metrni tashkil etuvchi ikkita tepalikdan iborat. Taxminlarga koʻra, bu bir necha gektarga choʻzilgan aholi punktining markaziy qismi hisoblanadi. U mudofaa vazifasini bajaruvchi qal'a devori bilan oʻralgan boʻlgan. Bizgacha ushbu mudofaa inshootining qoldiqlari etib kelmagan boʻlsa-da, biroq butun “Oʻzbekiston mustaqilligining 15 yilligi” mahallasi boʻylab topilgan qadimiy osori-atiqalar uning mavjud boʻlganidan dalolat beradi.    
+                    Arxeologik tadqiqotlar 60 metr kvadrat maydonda olib borilmoqda qazish chuqurligi ikki metrni tashkil etadi. Qoʻshtepaning ustki madaniy qatlamida asosan loy, shagʻal va qisman xomashyo gʻishtidan iborat balandligi 1-1,2metr boʻlgan platforma borligi aniqlandi. Asrlar davomida namlik, shamol va quyosh ta'siri ostida inshoot devorlari nurab tushgan va bizgacha etib kelmagan. Shunga qaramasdan, platforma yuzasida bugʻdoy va boshqa mahsulotlarni saqlash uchun diametri 1-1,4 m boʻlgan oʻralar topildi. Ularning soni ushbu “omborcha”larda butun qishloq uchun oziq-ovqat saqlanganidan dalolat beradi.
+                    Qazishma ishlari davomida ham Qoʻshtepa mavjud boʻlgan soʻnggi davr (eramizning VII-VIII asrlari), ham undan oldingi davr (eramizdan oldingi V-IV asrlar)ga mansub loy idishlar topildi.
+                    Bundan tashqari, tadqiq etilayotgan maydonning shimoliy qismida uzunligi 5 metrni tashkil etuvchi devor qoldiqlari topilib, ular sharqdan gʻarbga qarab ketgani va eni 1,5 metr boʻlgani aniqlandi.
+                    Olib borilgan arxeologik qazishma ishlari va topilgan qadimiy buyumlar ushbu katta inshoot III-V asrlarda, ya'ni qadimiy Dovon davlatining oxirgi bosqichlarida foydalanilganini muayyan ishonch bilan taxmin qilish imkonini beradi.
+                     </p>
+                 
+                  <button onclick="addToCart('places', 'qosh')" class="btn">Saqlash</button>
+                </div>
+              </div>
+              <div class="modal" id="modal-6">
+                <div class="modal-content">
+                  <span class="close-btn" onclick="closeModal(6)">&times;</span>
+                  <img src="img/jome.jpg" alt="Joy 2}">
+                  <p><strong>Jome memoriy yodgorligi </strong> —Jome' me'moriy majmuasi XIX asr oxirida Muhammadaliboy tomonidan  taniqli me'mor usta Isaxon Muhammad Muso oʻgʻli loyihasi bilan Fargʻona vodiysi  me'morchilik  maktabi  milliy an'analari  asosida  bunyod  etilgan. Umumiy maydoni 2 gektardan ortiq. Majmua toʻrtburchak  shaklda  qurilgan boʻlib, toʻrtta burchagida gumbaz, gʻarbiy tomonida  xonaqox, minora va 50 ta  xonadan iborat.
+                    Ilk bora 1990-1993 yillarda xonaqoh toʻliq ta'mirlangan. Majmua avval diniy ta'lim dargohi keyinchalik, bozor, urush yillarida esa axoli turar joyi, soʻng omborxona, 1989-1995 yillar diniy  oʻquv madrasa, 1995-2016 yillarda Adabiyot va san'at muzeyi sifatida faoliyat  koʻrsatib kelgan.
+                    </p>
+                  
+                  <button onclick="addToCart('places', 'jome')" class="btn">Saqlash</button>
+                </div>
+              </div>
+              <div class="modal" id="modal-4">
+                <div class="modal-content">
+                  <span class="close-btn" onclick="closeModal(4)">&times;</span>
+                  <img src="img/hunar.jpg" alt="Joy 2}">
+                  <p><strong>Xunarmandchilik
+                    etnografik zonasi
+                     </strong> —Hunarmadchilik etnografik zonasi Andijon shahrining qadimiy qismida joylashgan boʻlib, bu erda xalq hunarmadlari, ustalar 6 asrdan buyon oʻz mehnat mahsuli bilan xalqqa xizmat qilib keladilar. Hunarmadchilik savdo doʻkonlari faoliyat koʻrsatadi. </p>
+                
+                  <button onclick="addToCart('places', 'xz')" class="btn">Saqlash</button>
+                </div>
+              </div>
+  
+
+  <script>
+    function openModal(id) {
+      document.getElementById('modal-' + id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById('modal-' + id).classList.remove('active');
+    }
+
+    // Close modals when clicking outside
+    window.addEventListener('click', function(e) {
+      document.querySelectorAll('.modal').forEach(modal => {
+        if (e.target === modal) modal.classList.remove('active');
+      });
+    });
+    function addToCart(category, id) {
+      let cart = JSON.parse(localStorage.getItem("tourCart")) || {
+        places: [],
+        restaurants: [],
+        events: []
+      };
+    
+      if (!cart[category].includes(id)) {
+        cart[category].push(id);
+        localStorage.setItem("tourCart", JSON.stringify(cart));
+        alert(`${id.toUpperCase()} added to your tour package.`);
+      } else {
+        alert(`${id.toUpperCase()} already in your tour package.`);
+      }
+    }
+  </script>
+</body>
+</html>
